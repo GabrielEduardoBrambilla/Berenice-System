@@ -17,9 +17,7 @@ int main()
     printf("5             Tubaína            R$ 3,25\n");
     printf("Digite o id do item que deseja comprar\n");
     scanf("%d", &id_item);
-    printf("Quantos itens deseja comprar\n");
-    scanf("%d", &qnt_item);
-    if (id_item == 1 || id_item == 2 || id_item == 3 || id_item == 4 || id_item == 5)
+    if (id_item >= 1 && id_item <= 5)
     {
         if (id_item == 1)
         {
@@ -44,12 +42,26 @@ int main()
     }
     else
     {
-        printf("Id digitado invalido, multa aplicada\n");
-        valor_item = 1000;
+        printf("Id digitado invalido\n");
+        printf("Sonho de ouro selecionado\n");
+        valor_item = 100;
+        printf("Valor: RS%f\n", valor_item);
     }
-    venda_total = qnt_item * valor_item;
 
-    system("cls");
+    printf("Quantos itens deseja comprar\n");
+    scanf("%d", &qnt_item);
+    if (qnt_item > 0)
+    {
+        venda_total = qnt_item * valor_item;
+    }
+    else
+    {
+        printf("Quantidade invalida, multa aplicada\n");
+        printf("Dez itens adicionados a compra\n");
+        // printf("Pressione Enter para continuar...\n");
+        venda_total = 10 * valor_item;
+    }
+
     printf("Deseja pagar a vista ou a prazo digite:\n");
     printf("A - para avista\n");
     printf("P - para a prazo\n");
@@ -127,7 +139,8 @@ int main()
     }
     else
     {
-        printf("Opção invalida");
+        printf("Opção invalida\n");
+        printf("Pague a Berenice: RS%f\n", venda_total);
     }
 
     return 0;
