@@ -87,13 +87,13 @@ int main()
                 venda_total = venda_total - (venda_total * 0.05);
             }
             // Verifica se o total da venda é maior a 50 e ao mesmo tempo menor que 100
-            if (venda_total > 50 && venda_total < 100)
+            else if (venda_total > 50 && venda_total < 100)
             {
                 // Desconto de 10%
                 venda_total = venda_total - (venda_total * 0.1);
             }
             // Verifica se o total da venda é maior ou igual a 100
-            if (venda_total >= 100)
+            else if (venda_total >= 100)
             {
                 // Desconto de 18%
                 venda_total = venda_total - (venda_total * 0.18);
@@ -132,7 +132,7 @@ int main()
             }
             // Verifica se o quantidade de parcelas é menor ou igual a 3, ao mesmo tempo que é maior ou igual a 1
             // Basicamente ve se ela esta no range valido de parcelas
-            if (qnt_parcela <= 3 && qnt_parcela >= 1)
+            else if (qnt_parcela <= 3 && qnt_parcela >= 1)
             {
                 venda_total = venda_total + (venda_total * 0.05);
                 valor_parcela = venda_total / qnt_parcela;
@@ -143,7 +143,7 @@ int main()
                 printf("Valor da parcela: RS%f\n", valor_parcela);
             }
             // Verifica se a quantidade de parcelas é maior que 3
-            if (qnt_parcela > 3)
+            else if (qnt_parcela > 3)
             {
                 venda_total = venda_total + (venda_total * 0.08);
                 // divide o total da venda pela quantidade de parcelas para descobrir o quanto sera recebido por mes
