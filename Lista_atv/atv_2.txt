@@ -12,7 +12,7 @@ int main()
     printf("\n Insira a nota do seu trabalho: ");
     scanf("%f", &trabalho);
 
-    media = (prova * 0.4) + (trabalho * 0.6); // Média ponderada correta
+    media = (prova * 0.4) + (trabalho * 0.6); 
 
     printf("\n Valor da prova: %.2f", prova);
     printf("\n Valor do trabalho: %.2f", trabalho);

@@ -11,7 +11,6 @@ int main()
     printf("\n digite o valor da altura: ");
     scanf("%f", &altura);
 
-    volume = (3,14*(raio*raio)*altura);
     printf("o valor de volume e: %f", volume);
 
     if (volume>=1000){

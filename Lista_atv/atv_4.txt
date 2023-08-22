@@ -51,5 +51,4 @@ int main()
     printf("Maior: %d \nMedio: %d \nMenor: %d ", maior, medio, menor);
 
     return 0;
-
 }
