@@ -4,26 +4,107 @@
 int main()
 {
 
-// Atividade 8
-    int input_ano, verificacao_ano;
-    float verificacao_ano_100, verificacao_ano_400, verificacao_ano_04;
+// Atividade 10
+    int num_a, num_b;
+    float result;
+    char num_operation;
 
-    printf("Digite um ano ex: 2023\n");
-    scanf("%d", &input_ano);
+    printf("Digite dois numeros:\n");
+    scanf("%d", &num_a);
+    getchar();
+    scanf("%d", &num_b);
 
-    verificacao_ano_100 = input_ano % 100;
-    verificacao_ano_400 = input_ano % 400;
-    verificacao_ano_04 = input_ano % 04;
+    printf("Digite qual operação deseja fazer:\n  m para multiplicação\n        d para divisão\n        a para adição\n        s para subtração\n");
+    scanf("%d", &num_operation);
 
-    if(verificacao_ano_100 == 0 && verificacao_ano_400 == 0){
-        printf("Nao e bissexto\n");
-    }else{
-        if(verificacao_ano_04 == 0 && !verificacao_ano_100 ==0){
-          printf("E bissexto\n");
-        }else{
-            printf("Nao e bissexto\n");
-        }
+    switch(num_operation){
+    case 'm':
+        result = num_a * num_b;
+        break;
+    case 'd':
+        result = num_a / num_b; 
+        break;
+    case 'a':
+        result = num_a + num_b;
+        break;
+    case 's':
+        result = num_a - num_b;
+        break;
+    default:
+        printf("Operação inválida.\n");
+        result = 0; 
+        break;
     }
+    printf('O resultado e %f', &result);
+
+// Atividade 9
+  int num_mes;
+  printf("Digite um numero de mes entre 1 e 12\n");
+  scanf("%d", &num_mes);
+
+    switch (num_mes) {
+        case 1:
+            printf("Janeiro tem 31 dias.\n");
+            break;
+        case 2:
+            printf("Fevereiro tem 28 dias.\n");
+            break;
+        case 3:
+            printf("Março tem 31 dias.\n");
+            break;
+        case 4:
+            printf("Abril tem 30 dias.\n");
+            break;
+        case 5:
+            printf("Maio tem 31 dias.\n");
+            break;
+        case 6:
+            printf("Junho tem 30 dias.\n");
+            break;
+        case 7:
+            printf("Julho tem 31 dias.\n");
+            break;
+        case 8:
+            printf("Agosto tem 31 dias.\n");
+            break;
+        case 9:
+            printf("Setembro tem 30 dias.\n");
+            break;
+        case 10:
+            printf("Outubro tem 31 dias.\n");
+            break;
+        case 11:
+            printf("Novembro tem 30 dias.\n");
+            break;
+        case 12:
+            printf("Dezembro tem 31 dias.\n");
+            break;
+        default:
+            printf("Número invalido.\n");
+    }
+
+
+
+// Atividade 8
+  int input_ano, verificacao_ano;
+  float verificacao_ano_100, verificacao_ano_400, verificacao_ano_04;
+
+  printf("Digite um ano ex: 2023\n");
+  scanf("%d", &input_ano);
+
+  verificacao_ano_100 = input_ano % 100;
+  verificacao_ano_400 = input_ano % 400;
+  verificacao_ano_04 = input_ano % 04;
+
+  if(verificacao_ano_100 == 0 && verificacao_ano_400 == 0){
+      printf("Nao e bissexto\n");
+  }else{
+      if(verificacao_ano_04 == 0 && !verificacao_ano_100 ==0){
+        printf("E bissexto\n");
+      }else{
+          printf("Nao e bissexto\n");
+      }
+  }
 
 // Atividade 7
     int input_num, conta;
@@ -156,7 +237,7 @@ int main()
         printf("\n suficiente");
     }
     else
-        if(volume <1000){
+       {
     printf("\n insuficiente");
     }
 
