@@ -3,9 +3,8 @@
 #include <math.h>
 
 int App();
-void visualizarEstoque(int estoque_quants[], double estoque_preco[]);
-void realizarVenda(int estoque_quants[], double estoque_preco[]);
-
+void visualizarEstoque(int estoque_quants[], float estoque_preco[], char estoque_item_name[][50]);
+void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_item_name[][50]);
 int main()
 {
 
@@ -18,17 +17,14 @@ int App()
 {
     int opcao, quant_upt;
 
+    char estoque_item_name[5][50] = {"Pão de Forma", "Pão de Centeio", "Broa de Milho", "Sonho        ", "Tubaína      "};
+    float estoque_preco[5] = {7.50, 8.69, 5, 4.50, 3.25};
     int estoque_quants[5] = {10};
-    char estoque_item_name[5][20] = {"Pão de Forma", "Pão de Centeio", "Broa de Milho", "Sonho", "Tubaína"};
-    double estoque_preco[5] = {7.50, 8.69, 5, 4.50, 3.25};
     int has_estoque = 0, item_counter;
-
     int keep_sell;
-    int id_item, qnt_item, qnt_parcela, porcentagem_desc, porcent_juros;
     char opc_pagamento;
-    double subtotal;
 
-    float valor_item, venda_total, venda_total_juros, pagamento_recebido, valor_parcela, troco;
+    float venda_total, venda_total_juros, pagamento_recebido, valor_parcela, troco;
 
     do
     {
@@ -48,12 +44,12 @@ int App()
 
         case 2:
             system("cls");
-            visualizarEstoque(estoque_quants, estoque_preco);
+            visualizarEstoque(estoque_quants, estoque_preco, estoque_item_name);
 
             break;
         case 3:
 
-            realizarVenda(estoque_quants, estoque_preco);
+            realizarVenda(estoque_quants, estoque_preco, estoque_item_name);
             break;
         case 4:
             system("cls");
@@ -68,21 +64,23 @@ int App()
     } while (opcao != 4);
 }
 
-void realizarVenda(int estoque_quants[], double estoque_preco[])
+void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_item_name[][50])
 {
-    int item_code, has_estoque, qnt_item, valor_item, quant_upt, subtotal, venda_total, keep_sell;
-
-    int venda_item[1000];
-    int venda_quantidade[1000];
-    float subtotal_item[1000];
-    int venda[5] = {0};
-
+    int item_code, has_estoque, qnt_item, quant_upt, keep_sell;
+    float subtotal;
+    int venda_quantidade[5] = {0, 0, 0, 0, 0};
+    float subtotal_item[5];
+    int displayOrder[5];
+    float max;
+    int i;
+    int id_item, qnt_parcela, porcentagem_desc, porcent_juros, opc_pagamento;
+    float valor_item, venda_total, venda_total_juros, pagamento_recebido, valor_parcela, troco;
     do
     {
         // Seleciona um item valido
         do
         {
-            visualizarEstoque(estoque_quants, estoque_preco);
+            visualizarEstoque(estoque_quants, estoque_preco, estoque_item_name);
             printf("Digite qual item deseja vender\n");
             scanf(" %i", &item_code);
             if (item_code < 1 || item_code > 5)
@@ -119,18 +117,17 @@ void realizarVenda(int estoque_quants[], double estoque_preco[])
                 if ((estoque_quants[item_code - 1] -= qnt_item) < 0)
                 {
                     printf("Estoque insuficiente, digite novamente\n");
-                    qnt_item = -1;
+                    qnt_item = 0;
                 }
             }
-        } while (qnt_item < 0);
+        } while (qnt_item <= 0);
 
         estoque_quants[item_code - 1] -= qnt_item;
 
         valor_item = estoque_preco[item_code - 1];
-        subtotal = valor_item * quant_upt;
+        subtotal = valor_item * qnt_item;
 
-        venda_item[item_code - 1] = item_code;
-        venda_item[item_code - 1] = qnt_item;
+        venda_quantidade[item_code - 1] = qnt_item;
         subtotal_item[item_code - 1] = subtotal;
 
         venda_total += valor_item * qnt_item;
@@ -145,16 +142,130 @@ void realizarVenda(int estoque_quants[], double estoque_preco[])
         if (keep_sell == 2)
         {
 
-            printf("Item Nome do Item        Valor Unit. (R$) Quant. Sub-Total (R$)\n");
+            printf("Item (código)\tNome do Item\tValor (Unidade)\t Quant \tSub-Total\n");
+            i = 0;
+            for (i = 0; i < 5; i++)
+            {
+                if (venda_quantidade[i] > 0)
+                {
+                    printf("%d\t\t%s\t    R$ %.2f\t %d \tR$ %.2f\n", i + 1, estoque_item_name[i], estoque_preco[i], venda_quantidade[i], subtotal_item[i]);
+                }
+            }
+            printf("\t\t\t\t\t\t Total\tR$ %.2f", venda_total);
 
-            printf("1    Pão de Centeio       8.69         5     43.45\n");
-            printf("2    Pão de Centeio       8.69         2     17.38\n");
-            printf("3    Broa de Milho        5.00         2     10.00\n");
-            printf("4    Sonho                4.50         1     4.50\n");
-            printf("Total                      75.33\n");
+            max = subtotal_item[0];
+            i = 0;
+            for (i = 0; i < 5; i++)
+            {
+                if (max < subtotal_item[i])
+                {
+                    max = subtotal_item[i];
+                }
+            }
+            printf("\nO maior valor é: %.2f\n", max);
+
+            printf("Deseja pagar a vista ou a prazo digite:\n");
+            printf("Total da venda: RS %f\n", venda_total);
+
+            do
+            {
+
+                printf("1 - para avista\n");
+                printf("2 - para a prazo\n");
+                scanf(" %d", &opc_pagamento);
+                if (opc_pagamento != 1 && opc_pagamento != 2)
+                {
+                    printf("Opçao invalida\n");
+                }
+
+            } while (opc_pagamento != 1 && opc_pagamento != 2);
+
+            // Verifica se a opção de pagamento selecionada foi A ou a
+            if (opc_pagamento == 1)
+            {
+                printf("\nPagamento avista selecionado\n");
+                // Verifica se o total da venda é menor ou igual a 50
+                if (venda_total <= 50)
+                {
+                    // Desconto de 5%
+                    venda_total = venda_total - (venda_total * 0.05);
+                    porcentagem_desc = 5;
+                }
+                // Verifica se o total da venda é maior a 50 e ao mesmo tempo menor que 100
+                else if (venda_total > 50 && venda_total < 100)
+                {
+                    // Desconto de 10%
+                    venda_total = venda_total - (venda_total * 0.1);
+                    porcentagem_desc = 10;
+                }
+                // Verifica se o total da venda é maior ou igual a 100
+                else if (venda_total >= 100)
+                {
+                    // Desconto de 18%
+                    venda_total = venda_total - (venda_total * 0.18);
+                    porcentagem_desc = 18;
+                }
+                printf("Digite o valor recebido para calcular o troco\n");
+                printf("Desconto de %d%% aplicado a compra\n", porcentagem_desc);
+                printf("Total com desconto: RS %f\n", venda_total);
+                scanf("%f", &pagamento_recebido);
+
+                // Verifica se o pagamento recebido é invalido, sendo igual a 0 ou menor que 0
+                if (pagamento_recebido == 0 || pagamento_recebido < 0)
+                {
+                    printf("Falta receber: RS%f\n", venda_total);
+                }
+                // Verifica se o pagamento recebido é menor que o preco da venda a ser cobrada, e ao mesmo tempo se o pagamento é diferente de 0
+                else if (pagamento_recebido < venda_total && pagamento_recebido != 0)
+                {
+                    troco = venda_total - pagamento_recebido;
+                    printf("Falta receber: RS%f\n", troco);
+                }
+                // Se a verificação do if de cima for falso executa esse else
+                else
+                {
+                    troco = venda_total - pagamento_recebido;
+                    troco = troco * -1;
+                    printf("O troco e %f\n", troco);
+                }
+            }
+            else
+            {
+
+                printf("Digite a quantidade de vezes que deseja parcelar\n");
+                scanf("%d", &qnt_parcela);
+                // Verifica se a quantidade de parcelas é valido sendo maior que 0
+                if (qnt_parcela > 0)
+                {
+                    // Verifica se a quantidade de parcelas é está entre 3 e 1. E calcula os valores de acordo
+                    if (qnt_parcela <= 3 && qnt_parcela >= 1)
+                    {
+                        venda_total_juros = venda_total + (venda_total * 0.05);
+                        porcent_juros = 5;
+                        valor_parcela = venda_total_juros / qnt_parcela;
+                    }
+                    // Verifica se a quantidade de parcelas é maior que 3 e calcula os valores de acordo
+                    else if (qnt_parcela > 3)
+                    {
+                        venda_total_juros = venda_total + (venda_total * 0.08);
+                        porcent_juros = 8;
+                        valor_parcela = venda_total_juros / qnt_parcela;
+                    }
+                    printf("\nJuros Simples: %d%%\n", porcent_juros);
+                    printf("Parcelado em: %dX\n", qnt_parcela);
+                    printf("Total: RS%f\n", venda_total);
+                    printf("Total com juros: RS%f\n", venda_total_juros);
+                    printf("Valor da parcela: RS%f\n", valor_parcela);
+                }
+                else
+                {
+                    printf("Quantidade de parcelas invalida \nA receber: RS%f\n", venda_total);
+                }
+            }
         }
     } while (keep_sell == 1);
 }
+
 void cadastrarEstoque(int estoque_quants[])
 {
     int item_code = 0;
@@ -192,12 +303,12 @@ void cadastrarEstoque(int estoque_quants[])
     estoque_quants[item_code - 1] = quant_upt;
 }
 
-void visualizarEstoque(int estoque_quants[], double estoque_preco[])
+void visualizarEstoque(int estoque_quants[], float estoque_preco[], char estoque_item_name[][50])
 {
-    printf("Item (código) Nome do Item       Valor (Unidade) Estoque\n");
-    printf("1           Pão de Forma       R$ %.2f          %d\n", estoque_preco[0], estoque_quants[0]);
-    printf("2           Pão de Centeio     R$ %.2f          %d\n", estoque_preco[1], estoque_quants[1]);
-    printf("3           Broa de Milho      R$ %.2f          %d\n", estoque_preco[2], estoque_quants[2]);
-    printf("4           Sonho              R$ %.2f          %d\n", estoque_preco[3], estoque_quants[3]);
-    printf("5           Tubaína            R$ %.2f          %d\n", estoque_preco[4], estoque_quants[4]);
+    int i = 0;
+    printf("Item (código)\tNome do Item\tValor (Unidade)\tEstoque\n");
+    for (i = 0; i < 5; i++)
+    {
+        printf("%d\t\t%s\t    R$ %.2f\t%d\n", i + 1, estoque_item_name[i], estoque_preco[i], estoque_quants[i]);
+    }
 }
