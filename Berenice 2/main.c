@@ -16,23 +16,11 @@ int main()
 
 int App()
 {
-    struct Item
-    {
-        int id;
-        char nome[50];
-        float valor;
-        int quant;
-        double subTotal;
-    };
-
     int opcao, quant_upt;
+
     int estoque_quants[5] = {10};
-
-    // char nome[50] = {"Pão de Forma", "Pão de Centeio", "Broa de Milho", "Sonho", "Tubaína"};
-
-    // char estoque_item_name[5][20] = {"Pão de Forma", "Pão de Centeio", "Broa de Milho", "Sonho", "Tubaína"};
+    char estoque_item_name[5][20] = {"Pão de Forma", "Pão de Centeio", "Broa de Milho", "Sonho", "Tubaína"};
     double estoque_preco[5] = {7.50, 8.69, 5, 4.50, 3.25};
-
     int has_estoque = 0, item_counter;
 
     int keep_sell;
