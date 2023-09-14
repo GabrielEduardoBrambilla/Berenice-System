@@ -19,7 +19,7 @@ int App()
 
     char estoque_item_name[5][50] = {"Pão de Forma", "Pão de Centeio", "Broa de Milho", "Sonho        ", "Tubaína      "};
     float estoque_preco[5] = {7.50, 8.69, 5, 4.50, 3.25};
-    int estoque_quants[5] = {10};
+    int estoque_quants[5] = {0};
     int has_estoque = 0, item_counter;
     int keep_sell;
     char opc_pagamento;
@@ -141,7 +141,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
 
         if (keep_sell == 2)
         {
-
+            system("cls");
             printf("Item (código)\tNome do Item\tValor (Unidade)\t Quant \tSub-Total\n");
             i = 0;
             for (i = 0; i < 5; i++)
@@ -165,7 +165,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             printf("\nO maior valor é: %.2f\n", max);
 
             printf("Deseja pagar a vista ou a prazo digite:\n");
-            printf("Total da venda: RS %f\n", venda_total);
+            printf("Total da venda: RS %.2f\n", venda_total);
 
             do
             {
@@ -207,26 +207,26 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
                 }
                 printf("Digite o valor recebido para calcular o troco\n");
                 printf("Desconto de %d%% aplicado a compra\n", porcentagem_desc);
-                printf("Total com desconto: RS %f\n", venda_total);
+                printf("Total com desconto: RS %.2f\n", venda_total);
                 scanf("%f", &pagamento_recebido);
 
                 // Verifica se o pagamento recebido é invalido, sendo igual a 0 ou menor que 0
                 if (pagamento_recebido == 0 || pagamento_recebido < 0)
                 {
-                    printf("Falta receber: RS%f\n", venda_total);
+                    printf("Falta receber: RS%.2f\n", venda_total);
                 }
                 // Verifica se o pagamento recebido é menor que o preco da venda a ser cobrada, e ao mesmo tempo se o pagamento é diferente de 0
                 else if (pagamento_recebido < venda_total && pagamento_recebido != 0)
                 {
                     troco = venda_total - pagamento_recebido;
-                    printf("Falta receber: RS%f\n", troco);
+                    printf("Falta receber: RS%.2f\n", troco);
                 }
                 // Se a verificação do if de cima for falso executa esse else
                 else
                 {
                     troco = venda_total - pagamento_recebido;
                     troco = troco * -1;
-                    printf("O troco e %f\n", troco);
+                    printf("O troco e %.2f\n", troco);
                 }
             }
             else
@@ -253,13 +253,13 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
                     }
                     printf("\nJuros Simples: %d%%\n", porcent_juros);
                     printf("Parcelado em: %dX\n", qnt_parcela);
-                    printf("Total: RS%f\n", venda_total);
-                    printf("Total com juros: RS%f\n", venda_total_juros);
-                    printf("Valor da parcela: RS%f\n", valor_parcela);
+                    printf("Total: RS%.2f\n", venda_total);
+                    printf("Total com juros: RS%.2f\n", venda_total_juros);
+                    printf("Valor da parcela: RS%.2f\n", valor_parcela);
                 }
                 else
                 {
-                    printf("Quantidade de parcelas invalida \nA receber: RS%f\n", venda_total);
+                    printf("Quantidade de parcelas invalida \nA receber: RS%.2f\n", venda_total);
                 }
             }
         }
