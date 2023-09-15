@@ -19,7 +19,7 @@ int App()
 
     char estoque_item_name[5][50] = {"Pão de Forma", "Pão de Centeio", "Broa de Milho", "Sonho        ", "Tubaína      "};
     float estoque_preco[5] = {7.50, 8.69, 5, 4.50, 3.25};
-    int estoque_quants[5] = {0};
+    int estoque_quants[5] = {10, 10, 10, 10, 10};
     int has_estoque = 0, item_counter;
     int keep_sell;
     char opc_pagamento;
@@ -48,7 +48,6 @@ int App()
 
             break;
         case 3:
-
             realizarVenda(estoque_quants, estoque_preco, estoque_item_name);
             break;
         case 4:
@@ -69,9 +68,8 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
     int item_code, has_estoque, qnt_item, quant_upt, keep_sell, actionCode = 0;
     float subtotal;
     int venda_quantidade[5] = {0, 0, 0, 0, 0};
-    float subtotal_item[5];
+    float subtotal_item[5] = {0, 0, 0, 0, 0};
     int vendas_totais[5] = {0, 0, 0, 0, 0};
-    int displayOrder[5];
     float max;
     int i;
     int id_item, qnt_parcela, porcentagem_desc, porcent_juros, opc_pagamento;
@@ -84,7 +82,8 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             visualizarEstoque(estoque_quants, estoque_preco, estoque_item_name);
             printf("Digite qual item deseja vender\n");
             scanf(" %i", &item_code);
-            if (item_code < 1 || item_code > 5)
+            item_code--;
+            if (item_code < 0 || item_code > 4)
             {
                 system("cls");
                 printf("Código invalido\n");
@@ -92,7 +91,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             }
             else
             {
-                has_estoque = (estoque_quants[item_code - 1] <= 0) ? 0 : 1;
+                has_estoque = (estoque_quants[item_code] <= 0) ? 0 : 1;
                 if (has_estoque == 0)
                 {
                     system("cls");
@@ -101,7 +100,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
                 }
             }
 
-        } while ((item_code < 1 || item_code > 5) || (has_estoque == 0));
+        } while ((item_code < 0 || item_code > 4) || (has_estoque == 0));
         // Seleciona uma quantidade valida
         do
         {
@@ -115,7 +114,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             }
             else
             {
-                if ((estoque_quants[item_code - 1] -= qnt_item) < 0)
+                if ((estoque_quants[item_code] -= qnt_item) < 0)
                 {
                     printf("Estoque insuficiente, digite novamente\n");
                     qnt_item = 0;
@@ -123,21 +122,25 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             }
         } while (qnt_item <= 0);
 
-        estoque_quants[item_code - 1] -= qnt_item;
+        estoque_quants[item_code] = estoque_quants[item_code] - qnt_item;
 
-        valor_item = estoque_preco[item_code - 1];
+        valor_item = estoque_preco[item_code];
         subtotal = valor_item * qnt_item;
 
-        venda_quantidade[item_code - 1] = qnt_item;
-        subtotal_item[item_code - 1] = subtotal;
+        venda_quantidade[item_code] += qnt_item;
+
+        subtotal_item[item_code] += subtotal;
 
         venda_total += valor_item * qnt_item;
         do
         {
+            keep_sell = 0;
             printf("Deseja vender outro produto?\n");
             printf("1 - sim\n");
             printf("2 - não\n");
-            scanf(" %d", &keep_sell);
+            scanf("%d", &keep_sell);
+            printf("Keep Sell %d\n", keep_sell);
+
             if (keep_sell < 1 || keep_sell > 2)
             {
                 keep_sell = 0;
@@ -171,7 +174,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
 
             printf("Deseja pagar a vista ou a prazo digite:\n");
             printf("Total da venda: RS %.2f\n", venda_total);
-            relatorioVendas(estoque_item_name, venda_quantidade, actionCode);
+            relatorioVendas(estoque_item_name, venda_quantidade, estoque_item_name, actionCode);
             do
             {
 
@@ -265,7 +268,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
                 }
             }
         }
-    } while (keep_sell == 1);
+    } while (keep_sell != 2);
 }
 
 void cadastrarEstoque(int estoque_quants[])
@@ -314,7 +317,7 @@ void visualizarEstoque(int estoque_quants[], float estoque_preco[], char estoque
         printf("%d\t\t%s\t    R$ %.2f\t%d\n", i + 1, estoque_item_name[i], estoque_preco[i], estoque_quants[i]);
     }
 }
-void relatorioVendas(int vendas_totais[], int venda_quantidade[], int actionCode)
+void relatorioVendas(int vendas_totais[], int venda_quantidade[], char estoque_item_name[][50], int actionCode)
 {
     int i;
 
@@ -323,9 +326,19 @@ void relatorioVendas(int vendas_totais[], int venda_quantidade[], int actionCode
         i = 0;
         for (i = 0; i < 5; i++)
         {
-            if (venda_quantidade[i] > vendas_totais[i])
+            vendas_totais[i] += venda_quantidade[i];
+        }
+    }
+    else if (actionCode == 1)
+    {
+        for (i = 0; i < 5; i++)
+        {
+            system("cls");
+            printf("Relatorio de fechamento de caixa:\n");
+            printf("Item (código)\tNome do Item\t Quant\n");
+            if (venda_quantidade[i] > 0)
             {
-                vendas_totais[i] = venda_quantidade[i];
+                printf("%d\t\t%s\t    R$ %.2f\t %d \tR$ %.2f\n", i + 1, estoque_item_name[i], venda_quantidade[i]);
             }
         }
     }
