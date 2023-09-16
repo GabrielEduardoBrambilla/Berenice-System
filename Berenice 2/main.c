@@ -3,8 +3,8 @@
 #include <math.h>
 
 int App();
-void visualizarEstoque(int estoque_quants[], float estoque_preco[], char estoque_item_name[][50]);
-void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_item_name[][50]);
+int estoque_quants[5] = {0, 0, 0, 0, 0};
+
 int main()
 {
 
@@ -19,7 +19,6 @@ int App()
 
     char estoque_item_name[5][50] = {"Pão de Forma", "Pão de Centeio", "Broa de Milho", "Sonho        ", "Tubaína      "};
     float estoque_preco[5] = {7.50, 8.69, 5, 4.50, 3.25};
-    int estoque_quants[5] = {10, 10, 10, 10, 10};
     int has_estoque = 0, item_counter;
     int keep_sell;
     char opc_pagamento;
@@ -70,6 +69,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
     int venda_quantidade[5] = {0, 0, 0, 0, 0};
     float subtotal_item[5] = {0, 0, 0, 0, 0};
     int vendas_totais[5] = {0, 0, 0, 0, 0};
+    int verification;
     float max;
     int i;
     int id_item, qnt_parcela, porcentagem_desc, porcent_juros, opc_pagamento;
@@ -114,7 +114,8 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             }
             else
             {
-                if ((estoque_quants[item_code] -= qnt_item) < 0)
+                verification = estoque_quants[item_code] - qnt_item;
+                if (verification < 0)
                 {
                     printf("Estoque insuficiente, digite novamente\n");
                     qnt_item = 0;
@@ -122,7 +123,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             }
         } while (qnt_item <= 0);
 
-        estoque_quants[item_code] = estoque_quants[item_code] - qnt_item;
+        estoque_quants[item_code] -= qnt_item;
 
         valor_item = estoque_preco[item_code];
         subtotal = valor_item * qnt_item;
@@ -145,7 +146,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             {
                 keep_sell = 0;
             }
-        } while (keep_sell = 0);
+        } while (keep_sell == 0);
 
         if (keep_sell == 2)
         {
