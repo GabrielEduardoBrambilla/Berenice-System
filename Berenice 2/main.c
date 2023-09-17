@@ -95,7 +95,15 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             }
             else
             {
-                has_estoque = (estoque_quants[item_code] <= 0) ? 0 : 1;
+                if (estoque_quants[item_code] <= 0)
+                {
+                    has_estoque = 0;
+                }
+                else
+                {
+                    has_estoque = 1;
+                }
+
                 if (has_estoque == 0)
                 {
                     system("cls");
@@ -136,7 +144,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
 
         subtotal_item[item_code] += subtotal;
 
-        venda_total += valor_item * qnt_item;
+        venda_total += subtotal;
         do
         {
             keep_sell = 0;
@@ -146,7 +154,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             scanf("%d", &keep_sell);
             printf("Keep Sell %d\n", keep_sell);
 
-            if (keep_sell < 1 || keep_sell > 2)
+            if (keep_sell != 1 || keep_sell != 2)
             {
                 keep_sell = 0;
             }
