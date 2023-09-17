@@ -3,8 +3,8 @@
 #include <math.h>
 
 int App();
-int estoque_quants[5] = {0, 0, 0, 0, 0};
-
+int estoque_quants[5] = {10, 10, 10, 10, 10};
+int vendas_totais[5] = {0, 0, 0, 0, 0};
 int main()
 {
 
@@ -19,6 +19,9 @@ int App()
 
     char estoque_item_name[5][50] = {"Pão de Forma", "Pão de Centeio", "Broa de Milho", "Sonho        ", "Tubaína      "};
     float estoque_preco[5] = {7.50, 8.69, 5, 4.50, 3.25};
+
+    int venda_quantidade[5] = {0, 0, 0, 0, 0};
+    int actionCode;
     int has_estoque = 0, item_counter;
     int keep_sell;
     char opc_pagamento;
@@ -47,10 +50,12 @@ int App()
 
             break;
         case 3:
-            realizarVenda(estoque_quants, estoque_preco, estoque_item_name);
+            realizarVenda(estoque_quants, estoque_preco, estoque_item_name, vendas_totais);
             break;
         case 4:
             system("cls");
+            relatorioVendas(vendas_totais, venda_quantidade, estoque_item_name, 1);
+
             printf("Fechando programa\n");
             opcao = 4;
             break;
@@ -62,13 +67,12 @@ int App()
     } while (opcao != 4);
 }
 
-void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_item_name[][50])
+void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_item_name[][50], int vendas_totais[])
 {
     int item_code, has_estoque, qnt_item, quant_upt, keep_sell, actionCode = 0;
     float subtotal;
     int venda_quantidade[5] = {0, 0, 0, 0, 0};
     float subtotal_item[5] = {0, 0, 0, 0, 0};
-    int vendas_totais[5] = {0, 0, 0, 0, 0};
     int verification;
     float max;
     int i;
@@ -175,7 +179,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
 
             printf("Deseja pagar a vista ou a prazo digite:\n");
             printf("Total da venda: RS %.2f\n", venda_total);
-            relatorioVendas(estoque_item_name, venda_quantidade, estoque_item_name, actionCode);
+            relatorioVendas(estoque_item_name, venda_quantidade, estoque_item_name, 0);
             do
             {
 
@@ -318,6 +322,7 @@ void visualizarEstoque(int estoque_quants[], float estoque_preco[], char estoque
         printf("%d\t\t%s\t    R$ %.2f\t%d\n", i + 1, estoque_item_name[i], estoque_preco[i], estoque_quants[i]);
     }
 }
+
 void relatorioVendas(int vendas_totais[], int venda_quantidade[], char estoque_item_name[][50], int actionCode)
 {
     int i;
@@ -339,7 +344,7 @@ void relatorioVendas(int vendas_totais[], int venda_quantidade[], char estoque_i
             printf("Item (código)\tNome do Item\t Quant\n");
             if (venda_quantidade[i] > 0)
             {
-                printf("%d\t\t%s\t    R$ %.2f\t %d \tR$ %.2f\n", i + 1, estoque_item_name[i], venda_quantidade[i]);
+                printf("%d\t\t%s\t    %d \n", i + 1, estoque_item_name[i], vendas_totais[i]);
             }
         }
     }
