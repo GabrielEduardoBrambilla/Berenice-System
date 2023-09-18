@@ -3,7 +3,7 @@
 #include <math.h>
 
 int App();
-int estoque_quants[5] = {10, 10, 10, 10, 10};
+int estoque_quants[5] = {0, 0, 0, 0, 0};
 int vendas_totais[5] = {0, 0, 0, 0, 0};
 int main()
 {
@@ -76,11 +76,26 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
     int verification;
     float max;
     int i;
+    int estoque_verificacao = 0;
     int id_item, qnt_parcela, porcentagem_desc, porcent_juros, opc_pagamento;
     float valor_item, venda_total, venda_total_juros, pagamento_recebido, valor_parcela, troco;
     do
     {
         // Seleciona um item valido
+        i = 0;
+        for (i = 0; i < 5; i++)
+        {
+            if (estoque_quants[i] <= 0)
+            {
+                estoque_verificacao++;
+
+                if (estoque_verificacao == 5)
+                {
+                    printf("Nenhum item possui estoque, cadastre o estoque antes de vender \n");
+                    return 1;
+                }
+            }
+        }
         do
         {
             visualizarEstoque(estoque_quants, estoque_preco, estoque_item_name);
@@ -154,7 +169,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             scanf("%d", &keep_sell);
             printf("Keep Sell %d\n", keep_sell);
 
-            if (keep_sell != 1 || keep_sell != 2)
+            if (keep_sell != 1 && keep_sell != 2)
             {
                 keep_sell = 0;
             }
@@ -187,7 +202,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
 
             printf("Deseja pagar a vista ou a prazo digite:\n");
             printf("Total da venda: RS %.2f\n", venda_total);
-            relatorioVendas(estoque_item_name, venda_quantidade, estoque_item_name, 0);
+            relatorioVendas(vendas_totais, venda_quantidade, estoque_item_name, 0);
             do
             {
 
@@ -333,7 +348,7 @@ void visualizarEstoque(int estoque_quants[], float estoque_preco[], char estoque
 
 void relatorioVendas(int vendas_totais[], int venda_quantidade[], char estoque_item_name[][50], int actionCode)
 {
-    int i;
+    int i = 0;
 
     if (actionCode == 0)
     {
@@ -345,12 +360,15 @@ void relatorioVendas(int vendas_totais[], int venda_quantidade[], char estoque_i
     }
     else if (actionCode == 1)
     {
+        system("cls");
+        printf("Relatorio de fechamento de caixa:\n");
+        printf("Item (código)\tNome do Item\t Quant\n");
+
+        i = 0;
         for (i = 0; i < 5; i++)
         {
-            system("cls");
-            printf("Relatorio de fechamento de caixa:\n");
-            printf("Item (código)\tNome do Item\t Quant\n");
-            if (venda_quantidade[i] > 0)
+
+            if (vendas_totais[i] > 0)
             {
                 printf("%d\t\t%s\t    %d \n", i + 1, estoque_item_name[i], vendas_totais[i]);
             }
