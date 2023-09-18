@@ -5,15 +5,8 @@
 int App();
 int estoque_quants[5] = {0, 0, 0, 0, 0};
 int vendas_totais[5] = {0, 0, 0, 0, 0};
+
 int main()
-{
-
-    App();
-
-    return 0;
-}
-
-int App()
 {
     int opcao, quant_upt;
 
@@ -65,6 +58,7 @@ int App()
             break;
         }
     } while (opcao != 4);
+    return 0;
 }
 
 void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_item_name[][50], int vendas_totais[])
