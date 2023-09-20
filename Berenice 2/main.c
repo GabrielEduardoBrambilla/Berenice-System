@@ -76,7 +76,7 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
         {
             visualizarEstoque(estoque_quants, estoque_preco, estoque_item_name);
             printf("Digite qual item deseja vender\n");
-            scanf(" %i", &item_code);
+            scanf(" %d", &item_code);
             item_code--;
             if (item_code < 0 || item_code > 4)
             {
@@ -99,7 +99,6 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
                 {
                     system("cls");
                     printf("Item sem estoque. Selecione outro item\n");
-                    // Fazer If se nenhum item possuir estoque redirecionar para o menu principal
                 }
             }
 
@@ -143,7 +142,6 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             printf("1 - sim\n");
             printf("2 - não\n");
             scanf("%d", &keep_sell);
-            printf("Keep Sell %d\n", keep_sell);
 
             if (keep_sell != 1 && keep_sell != 2)
             {
@@ -240,36 +238,36 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
             }
             else
             {
-
-                printf("Digite a quantidade de vezes que deseja parcelar\n");
-                scanf("%d", &qnt_parcela);
+                do
+                {
+                    printf("Digite a quantidade de vezes que deseja parcelar\n");
+                    scanf("%d", &qnt_parcela);
+                    if (qnt_parcela > 0)
+                    {
+                        system('cls');
+                        printf("Quantidade de parcelas invalida, digite novamente\n");
+                    }
+                } while (qnt_parcela > 0);
                 // Verifica se a quantidade de parcelas é valido sendo maior que 0
-                if (qnt_parcela > 0)
+                // Verifica se a quantidade de parcelas é está entre 3 e 1. E calcula os valores de acordo
+                if (qnt_parcela <= 3 && qnt_parcela >= 1)
                 {
-                    // Verifica se a quantidade de parcelas é está entre 3 e 1. E calcula os valores de acordo
-                    if (qnt_parcela <= 3 && qnt_parcela >= 1)
-                    {
-                        venda_total_juros = venda_total + (venda_total * 0.05);
-                        porcent_juros = 5;
-                        valor_parcela = venda_total_juros / qnt_parcela;
-                    }
-                    // Verifica se a quantidade de parcelas é maior que 3 e calcula os valores de acordo
-                    else if (qnt_parcela > 3)
-                    {
-                        venda_total_juros = venda_total + (venda_total * 0.08);
-                        porcent_juros = 8;
-                        valor_parcela = venda_total_juros / qnt_parcela;
-                    }
-                    printf("\nJuros Simples: %d%%\n", porcent_juros);
-                    printf("Parcelado em: %dX\n", qnt_parcela);
-                    printf("Total: RS%.2f\n", venda_total);
-                    printf("Total com juros: RS%.2f\n", venda_total_juros);
-                    printf("Valor da parcela: RS%.2f\n", valor_parcela);
+                    venda_total_juros = venda_total + (venda_total * 0.05);
+                    porcent_juros = 5;
+                    valor_parcela = venda_total_juros / qnt_parcela;
                 }
-                else
+                // Verifica se a quantidade de parcelas é maior que 3 e calcula os valores de acordo
+                else if (qnt_parcela > 3)
                 {
-                    printf("Quantidade de parcelas invalida \nA receber: RS%.2f\n", venda_total);
+                    venda_total_juros = venda_total + (venda_total * 0.08);
+                    porcent_juros = 8;
+                    valor_parcela = venda_total_juros / qnt_parcela;
                 }
+                printf("\nJuros Simples: %d%%\n", porcent_juros);
+                printf("Parcelado em: %dX\n", qnt_parcela);
+                printf("Total: RS%.2f\n", venda_total);
+                printf("Total com juros: RS%.2f\n", venda_total_juros);
+                printf("Valor da parcela: RS%.2f\n", valor_parcela);
             }
         }
     } while (keep_sell != 2);
