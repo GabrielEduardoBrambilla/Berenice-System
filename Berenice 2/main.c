@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-int estoque_quants[5] = {0, 0, 0, 0, 0};
+int estoque_quants[5] = {10, 10, 10, 10, 0};
 int vendas_totais[5] = {0, 0, 0, 0, 0};
 
 int main()
@@ -242,12 +242,12 @@ void realizarVenda(int estoque_quants[], float estoque_preco[], char estoque_ite
                 {
                     printf("Digite a quantidade de vezes que deseja parcelar\n");
                     scanf("%d", &qnt_parcela);
-                    if (qnt_parcela > 0)
+                    if (qnt_parcela <= 0)
                     {
                         system('cls');
                         printf("Quantidade de parcelas invalida, digite novamente\n");
                     }
-                } while (qnt_parcela > 0);
+                } while (qnt_parcela <= 0);
                 // Verifica se a quantidade de parcelas é valido sendo maior que 0
                 // Verifica se a quantidade de parcelas é está entre 3 e 1. E calcula os valores de acordo
                 if (qnt_parcela <= 3 && qnt_parcela >= 1)
