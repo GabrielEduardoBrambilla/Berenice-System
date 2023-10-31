@@ -13,7 +13,7 @@ agenda *p;
 
 
 int main(){
-  FILE *arq = fopen("arquivo.txt", "w");
+  FILE *arq = fopen("arquivsos.txt", "w");
 
     if (arq == NULL){
         printf ("\n deu ruim no arquivo");
@@ -21,19 +21,23 @@ int main(){
     } else {
         printf ("\n criou ou maio o arquivo");
     }
-  fprintf(arq, "Texto no arquivo\n");
-  fclose(arq);
-  printf("\nLeitura de arq agora\n")
-   FILE *arqr = fopen("arquivo.txt", "r");
+  fprintf(arq, "11");
 
+  printf("\nLeitura de arq agora\n");
+   FILE *arqr = fopen("arquivsos.txt", "r");
+  int value;
     if (arqr == NULL){
         printf ("\n deu ruim no arquivo");
         return;
     } else {
         printf ("\n abriu o arquivo");
     }
-  
-    fgets()
+   fscanf (arqr,"%d", &value); //FALTA VERIF.
+   printf("\n%d", value);
+   
+   fclose (arqr);
+   fclose(arq);
+
   return 0;
 
 }
