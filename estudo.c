@@ -82,12 +82,12 @@ void cadastrocontato ()
     if (contador == 0)
     {
 
-        p = (agenda *)malloc(contador+1*sizeof(agenda));
 
     }
     else
     {
 
+        p = (agenda *)malloc(contador+1*sizeof(agenda));
         p = (agenda *)realloc(p,((contador+1)*sizeof(agenda)));
 
     }
