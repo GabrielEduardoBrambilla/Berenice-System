@@ -13,21 +13,19 @@ typedef struct
 Item *p;
 int contador = 5;
 
-int validador(int cod, Item tabela[], int contador);
+int validador(int cod, Item tabela[]);
 void RelatorioVendas(Item tabela[]);
-void visualizarEstoque(Item tabela[], int contador);
-void Cadastroitem(Item tabela[], int *contador);
-void visualizarEstoque(Item tabela[], int contador);
-void attproduto(Item tabela[], int contador);
-void excluirproduto(Item tabela[], int *contador);
-void Lerprodutos(Item tabela[], int *contador);
-void saveFile(Item tabela[], int contador);
+void cadastroitem(Item tabela[]);
+void visualizarEstoque(Item tabela[]);
+void attproduto(Item tabela[]);
+void excluirproduto(Item tabela[]);
+void Lerprodutos(Item tabela[]);
+void saveFile(Item tabela[]);
 void RelatorioVendas(Item tabela[]);
 void sell();
 
 int main()
 {
-
   p = (Item *)malloc((contador + 1) * sizeof(Item));
 
   int opcao;
@@ -53,12 +51,12 @@ int main()
     {
     case 1:
       system("cls");
-      Visualizarprodutos(tabela, &contador);
+      produtos(tabela);
       break;
 
     case 2:
       system("cls");
-      sell(tabela, &contador);
+      sell(tabela);
       break;
 
     case 3:
@@ -76,7 +74,7 @@ int main()
   return 0;
 }
 
-void Visualizarprodutos(Item tabela[], int *contador)
+void produtos(Item tabela[])
 {
   int opcao;
   do
@@ -94,26 +92,26 @@ void Visualizarprodutos(Item tabela[], int *contador)
     {
     case 1:
       system("cls");
-      visualizarEstoque(tabela, *contador);
+      visualizarEstoque(tabela);
       break;
     case 2:
       system("cls");
-      Cadastroitem(tabela, contador);
+      cadastroitem(tabela);
       break;
     case 3:
       system("cls");
-      attproduto(tabela, *contador);
+      attproduto(tabela);
       break;
     case 4:
       system("cls");
-      excluirproduto(tabela, contador);
+      excluirproduto(tabela);
       break;
     case 5:
-      saveFile(tabela, contador);
+      saveFile(tabela);
       break;
     case 6:
       system("cls");
-      Lerprodutos(tabela, contador);
+      Lerprodutos(tabela);
       break;
     case 7:
       system("cls");
@@ -126,7 +124,7 @@ void Visualizarprodutos(Item tabela[], int *contador)
   } while (opcao != 7);
 }
 
-void sell(Item tabela[], int *contador)
+void sell(Item tabela[])
 {
   int opcao;
   printf("Menu\n");
@@ -140,7 +138,7 @@ void sell(Item tabela[], int *contador)
   {
   case 1:
     system("cls");
-    RealizarVenda(tabela, contador);
+    RealizarVenda(tabela);
     break;
 
   case 2:
@@ -160,21 +158,21 @@ void sell(Item tabela[], int *contador)
     ;
 }
 
-void visualizarEstoque(Item tabela[], int contador)
+void visualizarEstoque(Item tabela[])
 {
-  printf("Código | Item           | Valor   | Quantidade | Produtos vendidos\n");
+  printf("Código\t| Item\t\t\t\t| Valor\t\t| Quantidade\t\t| Produtos vendidos\n");
   for (int i = 0; i < contador; i++)
   {
-    printf("%6d | %-15s | R$ %.2f | %d | %d \n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
+    printf("%6d\t| %-15s\t\t\t\t| R$ %.2f\t\t| %d\t\t| %d \n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
   }
 }
 
-void Cadastroitem(Item tabela[], int *contador)
+void cadastroitem(Item tabela[])
 {
   int quant_item = 0;
   int validar, quant, cod;
   int opcao;
-  int test = *contador;
+  int test = contador;
   printf("\n1 - Cadastrar Novo item: ");
   printf("\n2 - Adicionar estoque aos itens:");
   printf("\n3 - Voltar");
@@ -188,17 +186,17 @@ void Cadastroitem(Item tabela[], int *contador)
     {
       printf("\nEscreva o número do código: ");
       scanf("%d", &cod);
-      validar = validador(cod, tabela, *contador);
+      validar = validador(cod, tabela);
       if (validar == 0)
       {
-        tabela[*contador].codigo = cod;
+        tabela[contador].codigo = cod;
         printf("\nNome do item: ");
-        scanf("%s", tabela[*contador].nome);
+        scanf("%s", tabela[contador].nome);
         printf("\nValor do item: ");
-        scanf("%f", &tabela[*contador].valor);
+        scanf("%f", &tabela[contador].valor);
         printf("\nQuantidade do item: ");
-        scanf("%d", &tabela[*contador].quantidade);
-        (*contador)++;
+        scanf("%d", &tabela[contador].quantidade);
+        (contador)++;
         return 1;
       }
     }
@@ -208,7 +206,7 @@ void Cadastroitem(Item tabela[], int *contador)
 
       printf("\nQual produto deseja adicionar estoque (codigo do produto): ");
       scanf("%d", &cod);
-      for (int i = 0; i < *contador; i++)
+      for (int i = 0; i < contador; i++)
       {
         if (cod == tabela[i].codigo)
         {
@@ -231,7 +229,7 @@ void Cadastroitem(Item tabela[], int *contador)
   } while (opcao != 3);
 }
 
-int validador(int cod, Item tabela[], int contador)
+int validador(int cod, Item tabela[])
 {
   int validar;
   for (int i = 0; i < contador; i++)
@@ -246,7 +244,7 @@ int validador(int cod, Item tabela[], int contador)
   return 0;
 }
 
-void attproduto(Item tabela[], int contador)
+void attproduto(Item tabela[])
 {
   int codigo_editado;
   int encontrado = 0;
@@ -309,7 +307,7 @@ void attproduto(Item tabela[], int contador)
   }
 }
 
-void excluirproduto(Item tabela[], int *contador)
+void excluirproduto(Item tabela[])
 {
   int codigo_editado;
   char nome_close[100];
@@ -361,7 +359,7 @@ void excluirproduto(Item tabela[], int *contador)
   }
 }
 
-void saveFile(Item tabela[], int contador)
+void saveFile(Item tabela[])
 {
   FILE *pont_texto = fopen("produto.txt", "w");
 
@@ -385,7 +383,7 @@ void saveFile(Item tabela[], int contador)
   fclose(pont_texto);
 }
 
-void Lerprodutos(Item tabela[], int *contador)
+void Lerprodutos(Item tabela[])
 {
   FILE *pont_texto = fopen("produto.txt", "r");
 
@@ -408,7 +406,7 @@ void Lerprodutos(Item tabela[], int *contador)
   fclose(pont_texto);
 }
 
-void RealizarVenda(Item tabela[], int contador)
+void RealizarVenda(Item tabela[])
 {
   int has_estoque = 0, quant_upt, keep_sell, qnt_parcela, porcentagem_desc, porcent_juros, opc_pagamento, verification, i, actionCode = 0, estoque_verificacao = 0, venda_quantidade[5] = {0, 0, 0, 0, 0}, qnt_item;
   float valor_item, venda_total, *vendas_totais, venda_total_juros, pagamento_recebido, valor_parcela, troco, max, subtotal, subtotal_item[5] = {0, 0, 0, 0, 0};
