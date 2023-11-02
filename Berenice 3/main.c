@@ -1,43 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#define nameLength 50
 typedef struct
 {
   int codigo;
-  char nome[50];
+  char nome[nameLength];
   float valor;
   int quantidade;
   int quant_vend;
 } Item;
-Item *p;
+Item *tabela;
 int contador = 5;
 
 int validador(int cod, Item tabela[]);
 void RelatorioVendas(Item tabela[]);
 void cadastroitem(Item tabela[]);
 void visualizarEstoque(Item tabela[]);
-void attproduto(Item tabela[]);
+void atualziarProd(Item tabela[]);
 void excluirproduto(Item tabela[]);
 void Lerprodutos(Item tabela[]);
 void saveFile(Item tabela[]);
 void RelatorioVendas(Item tabela[]);
 void sell();
 
+void initializeDefaultItems()
+{
+  tabela[0].codigo = 1;
+  strcpy(tabela[0].nome, "pao de forma");
+  tabela[0].valor = 7.50;
+  tabela[0].quantidade = 10;
+  tabela[0].quant_vend = 0;
+
+  tabela[1].codigo = 2;
+  strcpy(tabela[1].nome, "pao de centeio");
+  tabela[1].valor = 8.69;
+  tabela[1].quantidade = 10;
+  tabela[1].quant_vend = 0;
+
+  tabela[2].codigo = 3;
+  strcpy(tabela[2].nome, "broa de milho");
+  tabela[2].valor = 5.00;
+  tabela[2].quantidade = 10;
+  tabela[2].quant_vend = 0;
+
+  tabela[3].codigo = 4;
+  strcpy(tabela[3].nome, "Sonho");
+  tabela[3].valor = 4.50;
+  tabela[3].quantidade = 10;
+  tabela[3].quant_vend = 0;
+
+  tabela[4].codigo = 5;
+  strcpy(tabela[4].nome, "Tubaina");
+  tabela[4].valor = 3.25;
+  tabela[4].quantidade = 10;
+  tabela[4].quant_vend = 0;
+}
+
 int main()
 {
-  p = (Item *)malloc((contador + 1) * sizeof(Item));
-
   int opcao;
 
-  Item tabela[100] = {
-      {1, "pao de forma", 7.50, 0},
-      {2, "pao de centeio", 8.69, 0},
-      {3, "broa de milho", 5.00, 0},
-      {4, "Sonho", 4.50, 0},
-      {5, "Tubaina", 3.25, 0},
-  };
-
+  tabela = (Item *)malloc(contador * sizeof(Item));
+  initializeDefaultItems();
   do
   {
     printf("Menu:\n");
@@ -71,9 +96,94 @@ int main()
       break;
     }
   } while (opcao != 3);
+  free(tabela);
   return 0;
 }
 
+// FUNÇÕES UTILITARIAS
+void inputNum(int *var)
+{
+  int validInput = 0;
+  do
+  {
+    if (scanf("%d", var) != 1)
+    {
+      // Clear input buffer
+      int c;
+      while ((c = getchar()) != '\n' && c != EOF)
+        ;
+      printf("\nNumero invalido. Tente novamente: ");
+    }
+    else
+    {
+      validInput = 1;
+    }
+  } while (!validInput);
+}
+void inputFloat(float *var)
+{
+  int validInput = 0;
+  do
+  {
+    scanf("%f", var);
+    if (*var > 0)
+    {
+      validInput = 1;
+    }
+    else
+    {
+      // Clear input buffer
+      int c;
+      while ((c = getchar()) != '\n' && c != EOF)
+        ;
+      printf("\nInput invalido. Tente novamente: ");
+    }
+  } while (!validInput);
+}
+void inputNumRange(int *var, int minRange, int maxRange)
+{
+  while (1)
+  {
+    scanf("%d", var);
+    if (*var >= minRange && *var <= maxRange)
+    {
+      return;
+    }
+    else
+    {
+
+      printf("\nNúmero inválido. Tente novamente.\n");
+    }
+  }
+}
+void inputString(char *str)
+{
+  int scape = 0;
+
+  do
+  {
+
+    scanf("%s", str);
+
+    size_t length = strlen(str);
+    if (str[length - 1] == '\n')
+    {
+      str[length - 1] = '\0'; // Remove the newline character
+    }
+
+    if (strlen(str) < 1)
+    {
+      printf("\nString invalid. Please try again.\n");
+    }
+    else
+    {
+      scape = 1;
+      return;
+    }
+  } while (scape != 1);
+}
+
+// Lógica do programa
 void produtos(Item tabela[])
 {
   int opcao;
@@ -100,7 +210,7 @@ void produtos(Item tabela[])
       break;
     case 3:
       system("cls");
-      attproduto(tabela);
+      atualziarProd(tabela);
       break;
     case 4:
       system("cls");
@@ -124,237 +234,273 @@ void produtos(Item tabela[])
   } while (opcao != 7);
 }
 
-void sell(Item tabela[])
-{
-  int opcao;
-  printf("Menu\n");
-  printf("1 - Realizar Venda:\n");
-  printf("2 - Relatorio de Venda:\n");
-  printf("3 - Sair");
-  printf("Selecione: \n");
-  scanf("%d", &opcao);
-
-  switch (opcao)
-  {
-  case 1:
-    system("cls");
-    RealizarVenda(tabela);
-    break;
-
-  case 2:
-    system("cls");
-    RelatorioVendas(tabela);
-    break;
-
-  case 3:
-    system("cls");
-    break;
-  default:
-    system("cls");
-    printf("opcao invalida!!\n");
-    break;
-  }
-  while (opcao != 3)
-    ;
-}
-
 void visualizarEstoque(Item tabela[])
 {
-  printf("Código\t| Item\t\t\t\t| Valor\t\t| Quantidade\t\t| Produtos vendidos\n");
+  printf("Código\t| %-20s\t| Valor\t\t| Quantidade\t| Produtos Vendidos\n", "Nome");
   for (int i = 0; i < contador; i++)
   {
-    printf("%6d\t| %-15s\t\t\t\t| R$ %.2f\t\t| %d\t\t| %d \n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
+    printf("%d\t| %-20s\t| R$ %.2f\t| %d\t\t| %d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
   }
 }
 
 void cadastroitem(Item tabela[])
 {
   int quant_item = 0;
-  int validar, quant, cod;
-  int opcao;
+  int validar, quant, cod, new_items;
+  int opcao, i = 0;
   int test = contador;
-  printf("\n1 - Cadastrar Novo item: ");
-  printf("\n2 - Adicionar estoque aos itens:");
-  printf("\n3 - Voltar");
-  printf("\nSelecione: ");
-  scanf("%d", &opcao);
-  getchar();
-
+  float valor;
+  Item temp;
   do
   {
+    printf("\n1 - Cadastrar Novo item");
+    printf("\n2 - Adicionar estoque aos itens");
+    printf("\n3 - Voltar");
+    printf("\nSelecione: ");
+    scanf("%d", &opcao);
+    getchar();
+
     if (opcao == 1)
     {
-      printf("\nEscreva o número do código: ");
-      scanf("%d", &cod);
-      validar = validador(cod, tabela);
-      if (validar == 0)
+      printf("\nQuantos produtos novos deseja cadastrar?: ");
+      inputNum(&new_items);
+
+      tabela = (Item *)realloc(tabela, (contador + new_items) * sizeof(Item));
+      printf("\n%d novos items serão adicionados", new_items);
+
+      for (int i = 1; new_items >= i; i++)
       {
-        tabela[contador].codigo = cod;
-        printf("\nNome do item: ");
-        scanf("%s", tabela[contador].nome);
-        printf("\nValor do item: ");
-        scanf("%f", &tabela[contador].valor);
-        printf("\nQuantidade do item: ");
-        scanf("%d", &tabela[contador].quantidade);
-        (contador)++;
-        return 1;
+        if (i > 1)
+        {
+          system('cls');
+        }
+        printf("\nProduto %d de %d novos produtos", i, new_items);
+
+        // Cod item
+        do
+        {
+          printf("\nCódigo do produto novo: ");
+          inputNum(&tabela[contador + i].codigo);
+          if (validador(tabela[contador + i].codigo, tabela) == 1)
+          {
+            system('cls');
+            printf("\nCódigo invalido ou em uso, tente novamente ");
+          }
+        } while (validador(tabela[contador + i].codigo, tabela) == 1);
+
+        //  Nome Item
+        printf("\nNome do produto: ");
+        inputString(&tabela[contador + i].nome);
+        printf("\nIn table %s ", tabela[contador + i].nome);
+
+        //  Preco unidade
+        printf("\nPreço unitario: ");
+        inputFloat(&tabela[contador + i].valor);
+
+        //  Quant item
+        printf("\nQuantidade em estoque: ");
+        inputNum(&tabela[contador + i].quantidade);
       }
     }
     else if (opcao == 2)
     {
-      p = (Item *)malloc((test + 1) * sizeof(Item));
 
-      printf("\nQual produto deseja adicionar estoque (codigo do produto): ");
-      scanf("%d", &cod);
+      do
+      {
+        printf("\nQual produto deseja adicionar estoque (codigo do produto): ");
+        inputNum(&cod);
+        if (validador(cod, tabela) != 0)
+        {
+          system('cls');
+          while (getchar() != '\n')
+            ;
+          printf("\nCódigo invalido, digite outro: ");
+        }
+      } while (validador(cod, tabela) != 0);
+
       for (int i = 0; i < contador; i++)
       {
-        if (cod == tabela[i].codigo)
+        if (cod == tabela[cod].codigo)
         {
           printf("\nDigite a quantidade: ");
-          scanf("%d", &quant);
+          inputNum(&quant);
           tabela[i].quantidade += quant;
         }
       }
-      return 1;
     }
     else if (opcao == 3)
     {
+
       system("cls");
       printf("\nSaindo...\n");
     }
-    if (opcao != 3)
+    else if (opcao != 3)
     {
-      printf("\n Codigo existente!!");
+      printf("\n Codigo inexistente!!");
     }
   } while (opcao != 3);
 }
 
 int validador(int cod, Item tabela[])
 {
-  int validar;
   for (int i = 0; i < contador; i++)
   {
     if (cod == tabela[i].codigo)
     {
-      validar = 0;
+      // codigo invalido já existe na tabela
       return 1;
     }
   }
-  printf("\nCódigo válido\n");
+  // Não existe nao tabela
+  // Novo código válido
   return 0;
 }
 
-void attproduto(Item tabela[])
+void atualziarProd(Item tabela[])
 {
-  int codigo_editado;
-  int encontrado = 0;
+  int codigo_editar;
   int verification;
+  int opcao, confirm;
+  Item tempItem;
   system("cls");
-  printf("Código | Item           | Valor   | Quantidade\n");
+  visualizarEstoque(tabela);
+
+  printf("Digite o codigo do produto a ser editado: ");
+  inputNum(&codigo_editar);
+  if (validador(codigo_editar, tabela) == 0)
+  {
+    system("cls");
+    printf("\nProduto não encontrado \n");
+    return;
+  }
+
   for (int i = 0; i < contador; i++)
   {
-    printf("%6d | %-15s | R$ %.2f | %d | %d \n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade);
-
-    printf("Digite o codigo do produto a ser editado: ");
-    scanf("%d", &codigo_editado);
-
-    for (int i = 0; i < contador; i++)
+    if (tabela[i].codigo == codigo_editar)
     {
-      if (tabela[i].codigo == codigo_editado)
+      system("cls");
+      printf("\nProduto encontrado!");
+      printf("\nCodigo Produto: %d", tabela[i].codigo);
+      printf("\nNome: %s", tabela[i].nome);
+      printf("\nValor Unitario: %.2f", tabela[i].valor);
+      printf("\nQuantidade: %d\n", tabela[i].quantidade);
+
+      printf("\nO que você deseja editar \n1- Valor unitario\n2- Quantidade em estoque\n3- Valor unitario e estoque: \n");
+      inputNumRange(&opcao, 1, 3);
+      switch (opcao)
       {
-        encontrado = 1;
-        printf("Produto encontrado:\n");
-        printf("Codigo Produto: %d", tabela[i].codigo);
-        printf("Nome Produto: %s\n", tabela[i].nome);
-        printf("Valor Produto: %f\n", tabela[i].valor);
-        printf("Quantidade Produto: %d\n", tabela[i].quantidade);
-
-        char opcao[50];
-        printf("O que você deseja editar (codigo, nome, valor, quantidade)? ");
-        scanf("%s", opcao);
-
-        if (strcmp(opcao, "nome") == 0)
+      case 1:
+        printf("\nValor atual: %.2f\n", tabela[i].valor);
+        printf("\nDigite o novo valor unitário: ");
+        inputFloat(&tempItem.valor);
+        printf("\nConfirmação: Valor alterado de %.2f para %.2f\n", tabela[i].valor, tempItem.valor);
+        printf("\n1- Confirmar\n2- Cancelar\n");
+        inputNumRange(&confirm, 1, 2);
+        if (confirm == 1)
         {
-          printf("Digite o novo nome: ");
-          scanf("%s", tabela[i].nome);
-        }
-        else if (strcmp(opcao, "codigo") == 0)
-        {
-          printf("Digite o novo codigo: ");
-          scanf("%d", &tabela[i].codigo);
-        }
-        else if (strcmp(opcao, "valor") == 0)
-        {
-          printf("Digite o novo valor: ");
-          scanf("%f", &tabela[i].valor);
-        }
-        else if (strcmp(opcao, "quantidade") == 0)
-        {
-          printf("Digite a nova quantidade: ");
-          scanf("%d", &tabela[i].quantidade);
+          tabela[i].valor = tempItem.valor;
         }
         else
         {
-          printf("Opcao invalida.\n");
+          return;
         }
-      }
-    }
+        break;
+      case 2:
+        printf("\nQuantidade atual: %d\n", tabela[i].quantidade);
+        printf("\nDigite a nova quantidade: ");
+        inputNum(&tempItem.quantidade);
+        printf("\nConfirmação: Quantidade alterada de %d para %d\n", tabela[i].quantidade, tempItem.quantidade);
+        printf("\n1- Confirmar\n2- Cancelar\n");
+        inputNumRange(&confirm, 1, 2);
+        if (confirm == 1)
+        {
+          tabela[i].valor = tempItem.quantidade;
+        }
+        else
+        {
+          return;
+        }
+        break;
+      case 3:
+        printf("\nValor atual: %.2f\n", tabela[i].valor);
+        printf("\nDigite o novo valor unitário: ");
+        inputFloat(&tempItem.valor);
+        printf("\nQuantidade atual: %d\n", tabela[i].quantidade);
+        printf("\nDigite a nova quantidade: ");
+        inputNum(&tempItem.quantidade);
+        printf("\nConfirme a alteração: \nValor alterado de %.2f para %.2f \nQuantidade alterada de %d para %d", tabela[i].valor, tempItem.valor, tabela[i].quantidade, tempItem.quantidade);
+        printf("\n1- Confirmar\n2- Cancelar\n");
+        inputNumRange(&confirm, 1, 2);
+        if (confirm == 1)
+        {
+          tabela[i].valor = tempItem.valor;
+          tabela[i].quantidade = tempItem.quantidade;
+        }
+        else
+        {
+          return;
+        }
 
-    if (!encontrado)
-    {
-      printf("Produto nao encontrado.\n");
+        break;
+      default:
+        printf("\nOpção inválida. Como?");
+        break;
+      }
     }
   }
 }
 
 void excluirproduto(Item tabela[])
 {
-  int codigo_editado;
+  int codigo_editar;
   char nome_close[100];
-  char excluir[10];
+  int confirm;
   int verification;
   system("cls");
-  printf("Código | Item           | Valor   | Quantidade\n");
+  visualizarEstoque(tabela);
+
+  printf("Digite o codigo do produto deseja excluir : ");
+  inputNum(&codigo_editar);
+  if (validador(codigo_editar, tabela) == 0)
+  {
+    system("cls");
+    printf("\nProduto não encontrado \n");
+    return;
+  }
+
   for (int i = 0; i < contador; i++)
   {
-    printf("%6d | %-15s | R$ %.2f | %d | %d \n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade);
-
-    printf("Digite o codigo do produto deseja excluir : ");
-    scanf("%d", &codigo_editado);
-    int encontrar = 0;
-
-    for (int i = 0; i < contador; i++)
+    if (tabela[i].codigo == codigo_editar)
     {
-      if (tabela[i].codigo == codigo_editado)
+      system("cls");
+      printf("Código\t| %-20s\t| Valor\t\t| Quantidade\t| Produtos Vendidos\n", "Nome");
+      printf("%d\t| %-20s\t| R$ %.2f\t| %d\t\t| %d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
+      printf("\nDeseja realmente excluir este item ");
+      printf("\n1- Confirmar\n2- Cancelar\n");
+      inputNumRange(&confirm, 1, 2);
+
+      if (confirm == 1)
       {
-        printf("\nDeseja excluir %s? (excluir/cancelar):", tabela[i].nome);
-        scanf("%s", excluir);
-        if (strcmp(excluir, "excluir") == 0)
-        {
-          for (int j = i; j < contador - 1; j++)
-          {
-            tabela[j] = tabela[j + 1]; // Move os contatos restantes
-          }
-          contador--;
-          printf("Contato excluído!\n");
-          encontrar = 1;
-          break;
-        }
-        else if (strcmp(excluir, "cancelar") == 0)
-        {
-          printf("Cancelado.\n");
-          encontrar = 1;
-          break;
-        }
-        else
-        {
-          printf("Resposta inválida. Digite 'excluir' ou 'cancelar'.\n");
-        }
+        // Substitui/sob-escreve o item com o codigo digitado pelo usuario pelo ultimo item da struct
+        tabela[codigo_editar].codigo = tabela[contador].codigo;
+        strcpy(tabela[codigo_editar].nome, tabela[contador].nome);
+        tabela[codigo_editar].quant_vend = tabela[contador].quant_vend;
+        tabela[codigo_editar].quantidade = tabela[contador].quantidade;
+        tabela[codigo_editar].valor = tabela[contador].valor;
+
+        // Diminui o contador
+        contador--;
+        // Realoca o espaço da struct com uma posição a menos excluindo o ultimo item
+        tabela = (Item *)realloc(tabela, (contador) * sizeof(Item));
+
+        printf("\nProduto excluído!\n");
+        return;
       }
-    }
-    if (!encontrar)
-    {
-      printf("Produto não encontrado.\n");
+      if (confirm == 2)
+      {
+        printf("\nCancelado.\n");
+        return;
+      }
     }
   }
 }
@@ -640,4 +786,38 @@ void RelatorioVendas(Item tabela[])
       printf("%d\t\t%s\t    %d\t\t%d", tabela->codigo, tabela->nome, tabela->quantidade, vendas_totais[i]);
     }
   }
+}
+
+void sell(Item tabela[])
+{
+  int opcao;
+  printf("Menu\n");
+  printf("1 - Realizar Venda:\n");
+  printf("2 - Relatorio de Venda:\n");
+  printf("3 - Sair");
+  printf("Selecione: \n");
+  scanf("%d", &opcao);
+
+  switch (opcao)
+  {
+  case 1:
+    system("cls");
+    RealizarVenda(tabela);
+    break;
+
+  case 2:
+    system("cls");
+    RelatorioVendas(tabela);
+    break;
+
+  case 3:
+    system("cls");
+    break;
+  default:
+    system("cls");
+    printf("opcao invalida!!\n");
+    break;
+  }
+  while (opcao != 3)
+    ;
 }
