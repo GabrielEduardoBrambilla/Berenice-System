@@ -30,31 +30,31 @@ void initializeDefaultItems()
   strcpy(tabela[0].nome, "pao de forma");
   tabela[0].valor = 7.50;
   tabela[0].quantidade = 10;
-  tabela[0].quant_vend = 0;
+  tabela[0].quant_vend = 1000;
 
   tabela[1].codigo = 2;
   strcpy(tabela[1].nome, "pao de centeio");
   tabela[1].valor = 8.69;
   tabela[1].quantidade = 10;
-  tabela[1].quant_vend = 0;
+  tabela[1].quant_vend = 10;
 
   tabela[2].codigo = 3;
   strcpy(tabela[2].nome, "broa de milho");
   tabela[2].valor = 5.00;
   tabela[2].quantidade = 10;
-  tabela[2].quant_vend = 0;
+  tabela[2].quant_vend = 100;
 
   tabela[3].codigo = 4;
   strcpy(tabela[3].nome, "Sonho");
   tabela[3].valor = 4.50;
   tabela[3].quantidade = 10;
-  tabela[3].quant_vend = 0;
+  tabela[3].quant_vend = 100;
 
   tabela[4].codigo = 5;
   strcpy(tabela[4].nome, "Tubaina");
   tabela[4].valor = 3.25;
   tabela[4].quantidade = 10;
-  tabela[4].quant_vend = 0;
+  tabela[4].quant_vend = 100;
 }
 
 int main()
@@ -507,49 +507,60 @@ void excluirproduto(Item tabela[])
 
 void saveFile(Item tabela[])
 {
-  FILE *pont_texto = fopen("produto.txt", "w");
+  FILE *file = fopen("produto.bin", "wb");
 
-  if (pont_texto == NULL)
+  if (file == NULL)
   {
     printf("Erro ao abrir o arquivo.\n");
     return;
   }
   else
   {
-    printf("\n criou arquivo");
+    printf("\nCriou arquivo\n");
   }
-
-  fprintf(pont_texto, "%d", contador);
+  fwrite(&contador, sizeof(int), 1, file);
 
   for (int i = 0; i < contador; i++)
   {
-    fprintf(pont_texto, "%d,%s,%.2f,%d,%d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
+    fwrite(&tabela[i].codigo, sizeof(int), 1, file);     // Write 'codigo' as binary (int)
+    fwrite(&tabela[i].nome, sizeof(char), 50, file);     // Write 'nome' as binary (char array)
+    fwrite(&tabela[i].valor, sizeof(float), 1, file);    // Write 'valor' as binary (float)
+    fwrite(&tabela[i].quantidade, sizeof(int), 1, file); // Write 'quantidade' as binary (int)
+    fwrite(&tabela[i].quant_vend, sizeof(int), 1, file); // Write 'quant_vend' as binary (int)
   }
 
-  fclose(pont_texto);
+  fclose(file);
 }
 
 void Lerprodutos(Item tabela[])
 {
-  FILE *pont_texto = fopen("produto.txt", "r");
+  FILE *file = fopen("produto.bin", "rb");
 
-  if (pont_texto == NULL)
+  if (file == NULL)
   {
-    printf("Arquivo de produto não encontrado.\n");
+    printf("\nArquivo de produto não encontrado.\n");
+    return;
   }
   else
   {
-    printf("\n Leu o arquivo");
+    printf("\nLeu o arquivo\n");
   }
-  fscanf(pont_texto, "%d\n", &contador);
 
-  //   p = (tabela *)malloc(contador+1*sizeof(tabela));
+  fread(&contador, sizeof(int), 1, file);
+
+  tabela = (Item *)malloc(contador * sizeof(Item));
 
   for (int i = 0; i < contador; i++)
   {
-    fprintf(pont_texto, "%d,%s,%.2f,%d,%d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
+    fread(&tabela[i].codigo, sizeof(int), 1, file);
+    fread(&tabela[i].nome, sizeof(char), 50, file);
+    fread(&tabela[i].valor, sizeof(float), 1, file);
+    fread(&tabela[i].quantidade, sizeof(int), 1, file);
+    fread(&tabela[i].quant_vend, sizeof(int), 1, file);
   }
-  fclose(pont_texto);
+  visualizarEstoque(tabela);
+
+  fclose(file);
 }
 
 void RealizarVenda(Item tabela[])
@@ -796,7 +807,7 @@ void sell(Item tabela[])
   printf("2 - Relatorio de Venda:\n");
   printf("3 - Sair");
   printf("Selecione: \n");
-  scanf("%d", &opcao);
+  inputNum(&opcao);
 
   switch (opcao)
   {
