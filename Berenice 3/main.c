@@ -20,7 +20,7 @@ void cadastroitem(Item tabela[]);
 void visualizarEstoque(Item tabela[], int code);
 void atualziarProd(Item tabela[]);
 void excluirproduto(Item tabela[]);
-void Lerprodutos(Item tabela[]);
+void Lerprodutos();
 void saveFile(Item tabela[]);
 void RelatorioVendas(Item tabela[]);
 void sell();
@@ -105,12 +105,12 @@ int main()
 void inputNum(int *var)
 {
   int validInput = 0;
+  int c;
   do
   {
     if (scanf("%d", var) != 1)
     {
       // Clear input buffer
-      int c;
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       printf("\nNumero invalido. Tente novamente: ");
@@ -118,6 +118,9 @@ void inputNum(int *var)
     else
     {
       validInput = 1;
+      // Clear input buffer
+      while ((c = getchar()) != '\n' && c != EOF)
+        ;
     }
   } while (!validInput);
 }
@@ -222,7 +225,7 @@ void produtos(Item tabela[])
       break;
     case 6:
       system("cls");
-      Lerprodutos(tabela);
+      Lerprodutos();
       break;
     case 7:
       system("cls");
@@ -306,6 +309,9 @@ void cadastroitem(Item tabela[])
         {
           printf("\nCódigo do produto novo: ");
           inputNum(&tabela[contador + i].codigo);
+
+          printf("\nCod in table: %d\n", tabela[contador + i].codigo);
+
           if (validador(tabela[contador + i].codigo, tabela) == 1)
           {
             system('cls');
@@ -316,15 +322,19 @@ void cadastroitem(Item tabela[])
         //  Nome Item
         printf("\nNome do produto: ");
         inputString(&tabela[contador + i].nome);
-        printf("\nIn table %s ", tabela[contador + i].nome);
+
+        printf("\nName in table %s ", tabela[contador + i].nome);
 
         //  Preco unidade
         printf("\nPreço unitario: ");
         inputFloat(&tabela[contador + i].valor);
 
+        printf("\nPreço in table: %d\n", tabela[contador + i].valor);
+
         //  Quant item
         printf("\nQuantidade em estoque: ");
         inputNum(&tabela[contador + i].quantidade);
+        printf("\nQuantidade in table: %d\n", tabela[contador + i].quantidade);
       }
     }
     else if (opcao == 2)
@@ -498,6 +508,8 @@ void excluirproduto(Item tabela[])
     if (tabela[i].codigo == codigo_editar)
     {
       system("cls");
+
+      // Mostra somente o item que sera excluido
       printf("Código\t| %-20s\t| Valor\t\t| Quantidade\t| Produtos Vendidos\n", "Nome");
       printf("%d\t| %-20s\t| R$ %.2f\t| %d\t\t| %d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
       printf("\nDeseja realmente excluir este item ");
@@ -506,12 +518,20 @@ void excluirproduto(Item tabela[])
 
       if (confirm == 1)
       {
+        for (int i = 0; i < contador; i++)
+        {
+          if (codigo_editar == tabela[i].codigo)
+          {
+            // recebe a posição do item dentro do array
+            codigo_editar = i;
+          }
+        }
         // Substitui/sob-escreve o item com o codigo digitado pelo usuario pelo ultimo item da struct
-        tabela[codigo_editar].codigo = tabela[contador].codigo;
-        strcpy(tabela[codigo_editar].nome, tabela[contador].nome);
-        tabela[codigo_editar].quant_vend = tabela[contador].quant_vend;
-        tabela[codigo_editar].quantidade = tabela[contador].quantidade;
-        tabela[codigo_editar].valor = tabela[contador].valor;
+        tabela[codigo_editar].codigo = tabela[contador - 1].codigo;
+        strcpy(tabela[codigo_editar].nome, tabela[contador - 1].nome);
+        tabela[codigo_editar].quant_vend = tabela[contador - 1].quant_vend;
+        tabela[codigo_editar].quantidade = tabela[contador - 1].quantidade;
+        tabela[codigo_editar].valor = tabela[contador - 1].valor;
 
         // Diminui o contador
         contador--;
@@ -557,7 +577,7 @@ void saveFile(Item tabela[])
   fclose(file);
 }
 
-void Lerprodutos(Item tabela[])
+void Lerprodutos()
 {
   FILE *file = fopen("produto.bin", "rb");
 
@@ -733,7 +753,7 @@ void RealizarVenda(Item tabela[])
     inputNumRange(&opc_pagamento, 1, 2);
     for (int i = 0; i < cart_size; i++)
     {
-      venda_total += tabela[i].valor * tabela[i].quantidade;
+      venda_total += carrinho[i].valor * carrinho[i].quantidade;
     }
     // Verifica se a opção de pagamento selecionada foi 1 ou seja avista
     if (opc_pagamento == 1)
