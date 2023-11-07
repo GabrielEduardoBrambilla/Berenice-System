@@ -141,7 +141,6 @@ void inputFloat(float *var)
   do
   {
     scanf("%f", var);
-    printf("\n Inside F; %f", *var);
     if (*var > 0)
     {
       validInput = 1;
