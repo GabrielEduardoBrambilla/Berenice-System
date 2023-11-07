@@ -2,11 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define nameLength 50
+#include <time.h>
+
 typedef struct
 {
   int codigo;
-  char nome[nameLength];
+  char nome[50];
   float valor;
   int quantidade;
   int quant_vend;
@@ -15,13 +16,12 @@ Item *tabela;
 int contador = 5;
 
 int validador(int cod, Item tabela[]);
-void relatorioVendas(Item tabela[]);
 void cadastroitem(Item tabela[]);
 void visualizarEstoque(Item tabela[]);
 void atualziarProd(Item tabela[]);
 void excluirproduto(Item tabela[]);
 void lerprodutos();
-void salvarArquivo(Item tabela[]);
+void salvarArquivoBN(Item tabela[]);
 void relatorioVendas(Item tabela[]);
 void menuVendas();
 
@@ -233,7 +233,7 @@ void produtos(Item tabela[])
       excluirproduto(tabela);
       break;
     case 5:
-      salvarArquivo(tabela);
+      salvarArquivoBN(tabela);
       break;
     case 6:
       system("cls");
@@ -563,7 +563,7 @@ void excluirproduto(Item tabela[])
   }
 }
 
-void salvarArquivo(Item tabela[])
+void salvarArquivoBN(Item tabela[])
 {
   FILE *file = fopen("produto.bin", "wb");
 
@@ -848,13 +848,51 @@ void realizarVenda(Item tabela[])
       printf("Valor da parcela: RS%.2f\n", valor_parcela);
     }
   }
+
+  salvarArquivoTXT(carrinho, cart_size);
   free(carrinho);
   return;
+}
+
+void salvarArquivoTXT(Item tabela[], int contador)
+{
+  time_t t = time(NULL);
+  struct tm tm = *localtime(&t);
+  char filename[22];
+
+  sprintf(filename, "%d-%02d-%02d_%02d-%02d-%02d.txt",
+          tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
+          tm.tm_hour, tm.tm_min, tm.tm_sec);
+
+  FILE *file = fopen(filename, "w");
+
+  if (file == NULL)
+  {
+    printf("Erro ao abrir o arquivo.\n");
+    return;
+  }
+  else
+  {
+    printf("\nCriou arquivo\n");
+  }
+  fprintf(file, "%d\n", contador);
+
+  for (int i = 0; i < contador; i++)
+  {
+    fprintf(file, "%d\n", tabela[i].codigo);
+    fprintf(file, "%s\n", tabela[i].nome);
+    fprintf(file, "%f\n", tabela[i].valor);
+    // quantidade vendida no carrinho
+    fprintf(file, "%d\n", tabela[i].quantidade);
+  }
+
+  fclose(file);
 }
 
 void relatorioVendas(Item tabela[])
 {
   float *vendas_totais;
+
   system("cls");
   printf("Relatorio de fechamento de caixa: \n");
   printf("Item (codigo)\tNome do item\tQuantidade\nVendidos");
