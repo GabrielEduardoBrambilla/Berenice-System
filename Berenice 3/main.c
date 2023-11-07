@@ -15,15 +15,15 @@ Item *tabela;
 int contador = 5;
 
 int validador(int cod, Item tabela[]);
-void RelatorioVendas(Item tabela[]);
+void relatorioVendas(Item tabela[]);
 void cadastroitem(Item tabela[]);
 void visualizarEstoque(Item tabela[]);
 void atualziarProd(Item tabela[]);
 void excluirproduto(Item tabela[]);
-void Lerprodutos();
-void saveFile(Item tabela[]);
-void RelatorioVendas(Item tabela[]);
-void sell();
+void lerprodutos();
+void salvarArquivo(Item tabela[]);
+void relatorioVendas(Item tabela[]);
+void menuVendas();
 
 void initializeDefaultItems()
 {
@@ -82,7 +82,7 @@ int main()
 
     case 2:
       system("cls");
-      sell(tabela);
+      menuVendas(tabela);
       break;
 
     case 3:
@@ -233,11 +233,11 @@ void produtos(Item tabela[])
       excluirproduto(tabela);
       break;
     case 5:
-      saveFile(tabela);
+      salvarArquivo(tabela);
       break;
     case 6:
       system("cls");
-      Lerprodutos();
+      lerprodutos();
       break;
     case 7:
       system("cls");
@@ -563,7 +563,7 @@ void excluirproduto(Item tabela[])
   }
 }
 
-void saveFile(Item tabela[])
+void salvarArquivo(Item tabela[])
 {
   FILE *file = fopen("produto.bin", "wb");
 
@@ -590,7 +590,7 @@ void saveFile(Item tabela[])
   fclose(file);
 }
 
-void Lerprodutos()
+void lerprodutos()
 {
   FILE *file = fopen("produto.bin", "rb");
 
@@ -621,7 +621,7 @@ void Lerprodutos()
   fclose(file);
 }
 
-void sell(Item tabela[])
+void menuVendas(Item tabela[])
 {
   int opcao;
   printf("Menu\n");
@@ -635,12 +635,12 @@ void sell(Item tabela[])
   {
   case 1:
     system("cls");
-    RealizarVenda(tabela);
+    realizarVenda(tabela);
     break;
 
   case 2:
     system("cls");
-    RelatorioVendas(tabela);
+    relatorioVendas(tabela);
     break;
 
   case 3:
@@ -649,7 +649,7 @@ void sell(Item tabela[])
   }
 }
 
-void RealizarVenda(Item tabela[])
+void realizarVenda(Item tabela[])
 {
   int has_estoque = 0, quant_upt, qnt_parcela, porcentagem_desc, porcent_juros, opc_pagamento, verification, i, actionCode = 0, estoque_verificacao = 0, venda_quantidade[5] = {0, 0, 0, 0, 0}, qnt_item;
   float venda_total, *vendas_totais, venda_total_juros, pagamento_recebido, valor_parcela, troco, max, subtotal, subtotal_item[5] = {0, 0, 0, 0, 0};
@@ -852,7 +852,7 @@ void RealizarVenda(Item tabela[])
   return;
 }
 
-void RelatorioVendas(Item tabela[])
+void relatorioVendas(Item tabela[])
 {
   float *vendas_totais;
   system("cls");
