@@ -117,7 +117,7 @@ void inputNum(int *var)
     }
     else
     {
-      if (*var < 1)
+      if (*var < 0)
       {
         // Clear input buffer
         *var = NULL;
@@ -188,7 +188,11 @@ void inputString(char *str)
 
     if (strlen(str) < 1)
     {
-      printf("\nString invalid. Please try again.\n");
+      printf("\nString invalida. Tente novamente:\n");
+    }
+    else if (strlen(str) > 25)
+    {
+      printf("\nString invalida. Tente novamente:\n");
     }
     else
     {
@@ -252,10 +256,10 @@ void produtos(Item tabela[])
 void visualizarEstoque(Item tabela[])
 {
 
-  printf("Código\t| %-20s\t| Valor\t\t| Quantidade\t| Produtos Vendidos\n", "Nome");
+  printf("Código\t| %-20s\t| Valor\t\t| Quantidade\t\n", "Nome");
   for (int i = 0; i < contador; i++)
   {
-    printf("%d\t| %-20s\t| R$ %.2f\t| %d\t\t| %d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
+    printf("%d\t| %-20s\t| R$ %.2f\t| %d\t\t\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade);
   }
   return;
 }
@@ -307,9 +311,6 @@ void cadastroitem(Item tabela[])
         {
           system("cls");
         }
-
-        // DEBUG
-        printf("\nTamanho contador: %d \nValor de i: %d \nSoma do dois: %d\n", contador, i, contador);
 
         printf("\nProduto %d de %d novos produtos", i, new_items);
 
@@ -398,7 +399,7 @@ int validador(int cod, Item tabela[])
       return 1;
     }
   }
-  // Não existe nao tabela
+  // Não existe na tabela
   // Novo código válido
   return 0;
 }
@@ -500,7 +501,6 @@ void atualziarProd(Item tabela[])
 void excluirproduto(Item tabela[])
 {
   int codigo_editar;
-  char nome_close[100];
   int confirm;
   int verification;
   system("cls");
@@ -555,7 +555,7 @@ void excluirproduto(Item tabela[])
       }
       if (confirm == 2)
       {
-        printf("\nCancelado.\n");
+        printf("\nAção cancelada.\n");
         return;
       }
     }
@@ -573,17 +573,17 @@ void salvarArquivoBN(Item tabela[])
   }
   else
   {
-    printf("\nCriou arquivo\n");
+    // printf("\nCriou arquivo\n");
   }
   fwrite(&contador, sizeof(int), 1, file);
 
   for (int i = 0; i < contador; i++)
   {
-    fwrite(&tabela[i].codigo, sizeof(int), 1, file);     // Write 'codigo' as binary (int)
-    fwrite(&tabela[i].nome, sizeof(char), 50, file);     // Write 'nome' as binary (char array)
-    fwrite(&tabela[i].valor, sizeof(float), 1, file);    // Write 'valor' as binary (float)
-    fwrite(&tabela[i].quantidade, sizeof(int), 1, file); // Write 'quantidade' as binary (int)
-    fwrite(&tabela[i].quant_vend, sizeof(int), 1, file); // Write 'quant_vend' as binary (int)
+    fwrite(&tabela[i].codigo, sizeof(int), 1, file);
+    fwrite(&tabela[i].nome, sizeof(char), 50, file);
+    fwrite(&tabela[i].valor, sizeof(float), 1, file);
+    fwrite(&tabela[i].quantidade, sizeof(int), 1, file);
+    fwrite(&tabela[i].quant_vend, sizeof(int), 1, file);
   }
 
   fclose(file);
@@ -600,7 +600,7 @@ void lerprodutos()
   }
   else
   {
-    printf("\nLeu o arquivo\n");
+    // printf("\nLeu o arquivo\n");
   }
 
   fread(&contador, sizeof(int), 1, file);
@@ -818,7 +818,7 @@ void realizarVenda(Item tabela[])
       do
       {
         printf("Digite a quantidade de vezes que deseja parcelar\n");
-        scanf("%d", &qnt_parcela);
+        inputNum(&qnt_parcela);
         if (qnt_parcela <= 0)
         {
           system("cls");
