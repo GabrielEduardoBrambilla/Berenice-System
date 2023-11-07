@@ -2,6 +2,7 @@
   "files.associations": {
     "stdio.h": "c",
     "limits": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "time.h": "c"
   }
 }
