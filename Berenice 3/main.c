@@ -284,7 +284,6 @@ void cadastroitem(Item tabela[])
   int validar, quant, cod, new_items;
   int opcao, i = 0;
   float valor;
-  Item temp;
   do
   {
     printf("\n1 - Cadastrar Novo item");
@@ -300,6 +299,7 @@ void cadastroitem(Item tabela[])
       inputNum(&new_items);
 
       tabela = (Item *)realloc(tabela, (contador + new_items) * sizeof(Item));
+
       printf("\n%d novos items serão adicionados", new_items);
 
       for (int i = 1; new_items >= i; i++)
@@ -308,39 +308,45 @@ void cadastroitem(Item tabela[])
         {
           system("cls");
         }
+
+        // DEBUG
+        printf("\nTamanho contador: %d \nValor de i: %d \nSoma do dois: %d\n", contador, i, contador);
+
         printf("\nProduto %d de %d novos produtos", i, new_items);
 
         // Cod item
         do
         {
           printf("\nCódigo do produto novo: ");
-          inputNum(&tabela[contador + i].codigo);
+          inputNum(&tabela[contador].codigo);
 
-          printf("\nCod in table: %d\n", tabela[contador + i].codigo);
+          printf("\nCod in table: %d\n", tabela[contador].codigo);
 
-          if (validador(tabela[contador + i].codigo, tabela) == 1)
+          if (validador(tabela[contador].codigo, tabela) == 1)
           {
             system("cls");
             printf("\nCódigo invalido ou em uso, tente novamente ");
           }
-        } while (validador(tabela[contador + i].codigo, tabela) == 1);
+        } while (validador(tabela[contador].codigo, tabela) == 1);
 
         //  Nome Item
         printf("\nNome do produto: ");
-        inputString(&tabela[contador + i].nome);
+        inputString(&tabela[contador].nome);
 
-        printf("\nName in table %s ", tabela[contador + i].nome);
+        printf("\nName in table %s ", tabela[contador].nome);
 
         //  Preco unidade
         printf("\nPreço unitario: ");
-        inputFloat(&tabela[contador + i].valor);
+        inputFloat(&tabela[contador].valor);
 
-        printf("\nPreço in table: %d\n", tabela[contador + i].valor);
+        printf("\nPreço in table: %f\n", tabela[contador].valor);
 
         //  Quant item
         printf("\nQuantidade em estoque: ");
-        inputNum(&tabela[contador + i].quantidade);
-        printf("\nQuantidade in table: %d\n", tabela[contador + i].quantidade);
+        inputNum(&tabela[contador].quantidade);
+        printf("\nQuantidade in table: %d\n", tabela[contador].quantidade);
+        tabela[contador].quant_vend = 0;
+        contador += i;
       }
     }
     else if (opcao == 2)
@@ -372,7 +378,7 @@ void cadastroitem(Item tabela[])
     {
 
       system("cls");
-      printf("\nSaindo...\n");
+      printf("\nVoltando ao menu...\n");
     }
     else if (opcao != 3)
     {
