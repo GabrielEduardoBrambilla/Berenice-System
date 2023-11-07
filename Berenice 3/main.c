@@ -300,7 +300,7 @@ void cadastroitem(Item tabela[])
       {
         if (i > 1)
         {
-          system('cls');
+          system("cls");
         }
         printf("\nProduto %d de %d novos produtos", i, new_items);
 
@@ -314,7 +314,7 @@ void cadastroitem(Item tabela[])
 
           if (validador(tabela[contador + i].codigo, tabela) == 1)
           {
-            system('cls');
+            system("cls");
             printf("\nCódigo invalido ou em uso, tente novamente ");
           }
         } while (validador(tabela[contador + i].codigo, tabela) == 1);
@@ -346,7 +346,7 @@ void cadastroitem(Item tabela[])
         inputNum(&cod);
         if (validador(cod, tabela) != 0)
         {
-          system('cls');
+          system("cls");
           while (getchar() != '\n')
             ;
           printf("\nCódigo invalido, digite outro: ");
@@ -809,7 +809,7 @@ void RealizarVenda(Item tabela[])
         scanf("%d", &qnt_parcela);
         if (qnt_parcela <= 0)
         {
-          system('cls');
+          system("cls");
           printf("Quantidade de parcelas invalida, digite novamente\n");
         }
       } while (qnt_parcela <= 0);
