@@ -17,7 +17,7 @@ int contador = 5;
 int validador(int cod, Item tabela[]);
 void RelatorioVendas(Item tabela[]);
 void cadastroitem(Item tabela[]);
-void visualizarEstoque(Item tabela[], int code);
+void visualizarEstoque(Item tabela[]);
 void atualziarProd(Item tabela[]);
 void excluirproduto(Item tabela[]);
 void Lerprodutos();
@@ -117,10 +117,21 @@ void inputNum(int *var)
     }
     else
     {
-      validInput = 1;
-      // Clear input buffer
-      while ((c = getchar()) != '\n' && c != EOF)
-        ;
+      if (*var < 1)
+      {
+        // Clear input buffer
+        *var = NULL;
+        while ((c = getchar()) != '\n' && c != EOF)
+          ;
+        printf("\nNumero invalido. Tente novamente: ");
+      }
+      else
+      {
+        validInput = 1;
+        // Clear input buffer
+        while ((c = getchar()) != '\n' && c != EOF)
+          ;
+      }
     }
   } while (!validInput);
 }
@@ -130,6 +141,7 @@ void inputFloat(float *var)
   do
   {
     scanf("%f", var);
+    printf("\n Inside F; %f", *var);
     if (*var > 0)
     {
       validInput = 1;
@@ -206,7 +218,7 @@ void produtos(Item tabela[])
     {
     case 1:
       system("cls");
-      visualizarEstoque(tabela, 1);
+      visualizarEstoque(tabela);
       break;
     case 2:
       system("cls");
@@ -238,21 +250,15 @@ void produtos(Item tabela[])
   } while (opcao != 7);
 }
 
-void visualizarEstoque(Item tabela[], int code)
+void visualizarEstoque(Item tabela[])
 {
 
-  if (code == 1)
+  printf("Código\t| %-20s\t| Valor\t\t| Quantidade\t| Produtos Vendidos\n", "Nome");
+  for (int i = 0; i < contador; i++)
   {
-    printf("Código\t| %-20s\t| Valor\t\t| Quantidade\t| Produtos Vendidos\n", "Nome");
-    for (int i = 0; i < contador; i++)
-    {
-      printf("%d\t| %-20s\t| R$ %.2f\t| %d\t\t| %d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
-    }
-    return;
+    printf("%d\t| %-20s\t| R$ %.2f\t| %d\t\t| %d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade, tabela[i].quant_vend);
   }
-  else if (code == 2)
-  {
-  }
+  return;
 }
 
 void visualizarComanda(Item tabela[], int counter)
@@ -339,23 +345,22 @@ void cadastroitem(Item tabela[])
     }
     else if (opcao == 2)
     {
-
+      system("cls");
+      visualizarEstoque(tabela);
       do
       {
-        printf("\nQual produto deseja adicionar estoque (codigo do produto): ");
+        printf("\nQual produto deseja ADICIONAR estoque (codigo do produto): ");
         inputNum(&cod);
-        if (validador(cod, tabela) != 0)
+        if (validador(cod, tabela) != 1)
         {
-          system("cls");
-          while (getchar() != '\n')
-            ;
+          // Limpar o buffer de input
           printf("\nCódigo invalido, digite outro: ");
         }
-      } while (validador(cod, tabela) != 0);
+      } while (validador(cod, tabela) != 1);
 
       for (int i = 0; i < contador; i++)
       {
-        if (cod == tabela[cod].codigo)
+        if (cod == tabela[i].codigo)
         {
           printf("\nDigite a quantidade: ");
           inputNum(&quant);
@@ -382,6 +387,8 @@ int validador(int cod, Item tabela[])
   {
     if (cod == tabela[i].codigo)
     {
+      // printf("\n Codigo passado %d, index do codigo %d", cod, i);
+
       // codigo invalido já existe na tabela
       return 1;
     }
@@ -398,7 +405,7 @@ void atualziarProd(Item tabela[])
   int opcao, confirm;
   Item tempItem;
   system("cls");
-  visualizarEstoque(tabela, 1);
+  visualizarEstoque(tabela);
 
   printf("Digite o codigo do produto a ser editado: ");
   inputNum(&codigo_editar);
@@ -492,7 +499,7 @@ void excluirproduto(Item tabela[])
   int confirm;
   int verification;
   system("cls");
-  visualizarEstoque(tabela, 1);
+  visualizarEstoque(tabela);
 
   printf("Digite o codigo do produto deseja excluir : ");
   inputNum(&codigo_editar);
@@ -603,7 +610,7 @@ void Lerprodutos()
     fread(&tabela[i].quantidade, sizeof(int), 1, file);
     fread(&tabela[i].quant_vend, sizeof(int), 1, file);
   }
-  visualizarEstoque(tabela, 1);
+  visualizarEstoque(tabela);
 
   fclose(file);
 }
@@ -681,7 +688,7 @@ void RealizarVenda(Item tabela[])
     do
     {
       system("cls");
-      visualizarEstoque(tabela, 1);
+      visualizarEstoque(tabela);
       printf("\n%d\n", cart_size);
 
       printf("Para sair digite 9999 qual item deseja vender\n");
