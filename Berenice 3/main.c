@@ -31,31 +31,31 @@ void initializeDefaultItems()
   strcpy(tabela[0].nome, "pao de forma");
   tabela[0].valor = 7.50;
   tabela[0].quantidade = 10;
-  tabela[0].quant_vend = 1000;
+  tabela[0].quant_vend = 2;
 
   tabela[1].codigo = 2;
   strcpy(tabela[1].nome, "pao de centeio");
   tabela[1].valor = 8.69;
   tabela[1].quantidade = 10;
-  tabela[1].quant_vend = 10;
+  tabela[1].quant_vend = NULL;
 
   tabela[2].codigo = 3;
   strcpy(tabela[2].nome, "broa de milho");
   tabela[2].valor = 5.00;
   tabela[2].quantidade = 10;
-  tabela[2].quant_vend = 100;
+  tabela[2].quant_vend = NULL;
 
   tabela[3].codigo = 4;
   strcpy(tabela[3].nome, "Sonho");
   tabela[3].valor = 4.50;
   tabela[3].quantidade = 10;
-  tabela[3].quant_vend = 100;
+  tabela[3].quant_vend = NULL;
 
   tabela[4].codigo = 5;
   strcpy(tabela[4].nome, "Tubaina");
   tabela[4].valor = 3.25;
   tabela[4].quantidade = 10;
-  tabela[4].quant_vend = 100;
+  tabela[4].quant_vend = NULL;
 }
 
 int main()
@@ -890,16 +890,14 @@ void salvarArquivoTXT(Item tabela[], int contador)
 
 void relatorioVendas(Item tabela[])
 {
-  float *vendas_totais;
-
   system("cls");
-  printf("Relatorio de fechamento de caixa: \n");
-  printf("Item (codigo)\tNome do item\tQuantidade\nVendidos");
+  printf("Relatorio de Vendas: \n");
+  printf("Código\t| %-20s\t| Qnt. Estoque\t| Qnt. Vendido\n", "Nome");
   for (int i = 0; i < contador; i++)
   {
-    if (vendas_totais[i] > 0)
+    if (tabela[i].quant_vend > 0)
     {
-      printf("%d\t\t%s\t    %d\t\t%d", 50, tabela->nome, tabela->quantidade, vendas_totais[i]);
+      printf("%d\t| %-20s\t| %d\t\t| \t%d\t\n", tabela[i].codigo, tabela[i].nome, tabela[i].quantidade, tabela[i].quant_vend);
     }
   }
 }
