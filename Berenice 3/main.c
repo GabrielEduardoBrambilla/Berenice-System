@@ -123,7 +123,9 @@ void inputNum(int *var)
   {
     if (scanf("%d", var) != 1)
     {
+
       // Clear input buffer
+      // EOF: End Of File
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       printf("\nNumero invalido. Tente novamente: ");
@@ -133,6 +135,7 @@ void inputNum(int *var)
       if (*var < 0)
       {
         // Clear input buffer
+        // EOF: End Of File
         *var = NULL;
         while ((c = getchar()) != '\n' && c != EOF)
           ;
@@ -142,6 +145,7 @@ void inputNum(int *var)
       {
         validInput = 1;
         // Clear input buffer
+        // EOF: End Of File
         while ((c = getchar()) != '\n' && c != EOF)
           ;
       }
@@ -161,6 +165,7 @@ void inputFloat(float *var)
     else
     {
       // Clear input buffer
+      // EOF: End Of File
       int c;
       while ((c = getchar()) != '\n' && c != EOF)
         ;
@@ -885,7 +890,7 @@ void salvarArquivoTXT(Item tabela[], int contador)
   }
   else
   {
-    printf("\nCriou arquivo\n");
+    // printf("\nCriou arquivo\n");
   }
   fprintf(file, "%d\n", contador);
 
