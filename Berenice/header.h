@@ -29,6 +29,7 @@ void produtos(Item *tabela);
 void realizarVenda(Item *tabela);
 void sortQntVenda(Item *tabela, int size_tabela);
 void sortCode(Item *tabela, int size_tabela);
+void salvarArquivoHTML(Item *tabela);
 
 // FUNÇÕES UTILITARIAS
 void inputNum(int *var);

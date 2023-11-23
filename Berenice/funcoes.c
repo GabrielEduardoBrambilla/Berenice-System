@@ -180,7 +180,7 @@ void produtos(Item *tabela)
       excluirproduto(tabela);
       break;
     case 5:
-      salvarArquivoBN(tabela);
+      salvarArquivoHTML(tabela);
       break;
     case 6:
       system("cls");
@@ -535,6 +535,78 @@ void salvarArquivoBN(Item *tabela)
 
   fclose(file);
 }
+void salvarArquivoHTML(Item *tabela)
+{
+  FILE *file = fopen("estoque.html", "w");
+  sortQntVenda(tabela, contador);
+  if (file == NULL)
+  {
+    printf("Erro ao criar o arquivo.\n");
+    return;
+  }
+  else
+  {
+    fprintf(file, "<!DOCTYPE html>\n");
+    fprintf(file, "<html>\n");
+    fprintf(file, "<head>\n");
+    fprintf(file, "<title>Produto</title>\n");
+    fprintf(file, "<style>\n");
+    fprintf(file, "html, body {\n");
+    fprintf(file, "    height: 100vh;\n");
+    fprintf(file, "    margin: 0;\n");
+    fprintf(file, "    display: flex;\n");
+    fprintf(file, "    justify-content: center;\n");
+    fprintf(file, "    align-items: center;\n");
+    fprintf(file, "}\n");
+    fprintf(file, "table {\n");
+    fprintf(file, "    border-collapse: collapse;\n");
+    fprintf(file, "    border: 2px solid #ddd;\n");
+    fprintf(file, "}\n");
+    fprintf(file, "th, td {\n");
+    fprintf(file, "    padding: 8px;\n");
+    fprintf(file, "    border: 1px solid #ddd;\n");
+    fprintf(file, "    text-align: center;\n"); // Center align content
+    fprintf(file, "}\n");
+    fprintf(file, "thead tr {\n");
+    fprintf(file, "    background-color: #f2f2f2;\n");
+    fprintf(file, "}\n");
+    fprintf(file, "</style>\n");
+    fprintf(file, "</head>\n");
+    fprintf(file, "<body>\n");
+    fprintf(file, "<table>\n");
+    fprintf(file, "<thead>\n");
+    fprintf(file, "<tr>\n");
+    fprintf(file, "<th>Código</th>\n");
+    fprintf(file, "<th>Nome</th>\n");
+    fprintf(file, "<th>Valor</th>\n");
+    fprintf(file, "<th>Quantidade</th>\n");
+    fprintf(file, "<th>Quantidade Vendida</th>\n");
+    fprintf(file, "</tr>\n");
+    fprintf(file, "</thead>\n");
+    fprintf(file, "<tbody>\n");
+
+    for (int i = 0; i < contador; i++)
+    {
+      fprintf(file, "<tr>\n");
+      fprintf(file, "<td>%d</td>\n", tabela[i].codigo);
+      fprintf(file, "<td>%s</td>\n", tabela[i].nome);
+      fprintf(file, "<td>%.2f</td>\n", tabela[i].valor);
+      fprintf(file, "<td>%d</td>\n", tabela[i].quantidade);
+      fprintf(file, "<td>%d</td>\n", tabela[i].quant_vend);
+      fprintf(file, "</tr>\n");
+    }
+
+    fprintf(file, "</tbody>\n");
+    fprintf(file, "</table>\n");
+    fprintf(file, "</body>\n");
+    fprintf(file, "</html>\n");
+
+    sortCode(tabela, contador);
+
+    fclose(file);
+  }
+}
+
 void lerprodutos(Item **tabela)
 {
   FILE *file = fopen("produto.bin", "rb");

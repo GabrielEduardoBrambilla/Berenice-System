@@ -17,3 +17,13 @@
 	<locale.h>
 	"header.h"
 
+1700762505 source:c:\wamp64\www\berenice-system\berenice\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<locale.h>
+	"header.h"
+
+1700780071 c:\wamp64\www\berenice-system\berenice\header.h
+
