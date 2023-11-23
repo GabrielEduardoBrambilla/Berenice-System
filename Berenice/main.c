@@ -10,7 +10,7 @@ int main()
 {
 
   Item *tabela;
-
+  contador = 5;
   int opcao;
 
   tabela = (Item *)malloc(contador * sizeof(Item));

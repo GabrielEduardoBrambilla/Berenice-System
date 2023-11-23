@@ -1,87 +1,11 @@
-
+#include "header.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <locale.h>
 
-typedef struct
-{
-  int codigo;
-  char nome[50];
-  float valor;
-  int quantidade;
-  int quant_vend;
-} Item;
-Item *tabela;
-int contador = 5;
-
-int validador(int cod, Item tabela[]);
-void cadastroitem(Item tabela[]);
-void visualizarEstoque(Item tabela[]);
-void atualziarProd(Item tabela[]);
-void excluirproduto(Item tabela[]);
-void lerprodutos();
-void salvarArquivoBN(Item tabela[]);
-void relatorioVendas(Item tabela[]);
-void menuVendas(Item tabela[]);
-void visualizarComanda(Item tabela[], int counter);
-void salvarArquivoBN(Item tabela[]);
-void salvarArquivoTXT(Item tabela[], int contador);
-void produtos(Item tabela[]);
-void realizarVenda(Item tabela[]);
-
-// FUNÇÕES UTILITARIAS
-void inputNum(int *var);
-void inputFloat(float *var);
-void inputNumRange(int *var, int minRange, int maxRange);
-void inputString(char *str);
-void initializeDefaultItems();
-
-int main()
-{
-  int opcao;
-
-  tabela = (Item *)malloc(contador * sizeof(Item));
-  initializeDefaultItems();
-  do
-  {
-    printf("Menu:\n");
-    printf("1 - Produtos\n");
-    printf("2 - Vendas\n");
-    printf("3 - Sair\n");
-    printf("Escolha uma opção: ");
-    inputNumRange(&opcao, 1, 3);
-
-    switch (opcao)
-    {
-    case 1:
-      system("cls");
-      produtos(tabela);
-      break;
-
-    case 2:
-      system("cls");
-      menuVendas(tabela);
-      break;
-
-    case 3:
-      system("cls");
-      printf("Fechando o programa!\n");
-
-      break;
-
-    default:
-      system("cls");
-      printf("Opção inválida. Tente novamente.\n");
-      break;
-    }
-  } while (opcao != 3);
-  free(tabela);
-  return 0;
-}
-
-void initializeDefaultItems()
+void initializeDefaultItems(Item *tabela)
 {
   tabela[0].codigo = 1;
   strcpy(tabela[0].nome, "pao de forma");
@@ -93,25 +17,25 @@ void initializeDefaultItems()
   strcpy(tabela[1].nome, "pao de centeio");
   tabela[1].valor = 8.69;
   tabela[1].quantidade = 10;
-  tabela[1].quant_vend = NULL;
+  tabela[1].quant_vend = 8;
 
   tabela[2].codigo = 3;
   strcpy(tabela[2].nome, "broa de milho");
   tabela[2].valor = 5.00;
   tabela[2].quantidade = 10;
-  tabela[2].quant_vend = NULL;
+  tabela[2].quant_vend = 1;
 
   tabela[3].codigo = 4;
   strcpy(tabela[3].nome, "Sonho");
   tabela[3].valor = 4.50;
   tabela[3].quantidade = 10;
-  tabela[3].quant_vend = NULL;
+  tabela[3].quant_vend = 10;
 
   tabela[4].codigo = 5;
   strcpy(tabela[4].nome, "Tubaina");
   tabela[4].valor = 3.25;
   tabela[4].quantidade = 10;
-  tabela[4].quant_vend = NULL;
+  tabela[4].quant_vend = 12;
 }
 
 // FUNÇÕES UTILITARIAS
@@ -123,7 +47,9 @@ void inputNum(int *var)
   {
     if (scanf("%d", var) != 1)
     {
+
       // Clear input buffer
+      // EOF: End Of File
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       printf("\nNumero invalido. Tente novamente: ");
@@ -133,6 +59,7 @@ void inputNum(int *var)
       if (*var < 0)
       {
         // Clear input buffer
+        // EOF: End Of File
         *var = NULL;
         while ((c = getchar()) != '\n' && c != EOF)
           ;
@@ -142,6 +69,7 @@ void inputNum(int *var)
       {
         validInput = 1;
         // Clear input buffer
+        // EOF: End Of File
         while ((c = getchar()) != '\n' && c != EOF)
           ;
       }
@@ -161,6 +89,7 @@ void inputFloat(float *var)
     else
     {
       // Clear input buffer
+      // EOF: End Of File
       int c;
       while ((c = getchar()) != '\n' && c != EOF)
         ;
@@ -216,7 +145,7 @@ void inputString(char *str)
 }
 
 // Lógica do programa
-void produtos(Item tabela[])
+void produtos(Item *tabela)
 {
   int opcao;
   do
@@ -253,7 +182,7 @@ void produtos(Item tabela[])
       break;
     case 6:
       system("cls");
-      lerprodutos();
+      lerprodutos(tabela);
       break;
     case 7:
       system("cls");
@@ -266,9 +195,9 @@ void produtos(Item tabela[])
   } while (opcao != 7);
 }
 
-void visualizarEstoque(Item tabela[])
+void visualizarEstoque(Item *tabela)
 {
-
+  sortCode(tabela, contador);
   printf("Código\t| %-20s\t| Valor\t\t| Quantidade\t\n", "Nome");
   for (int i = 0; i < contador; i++)
   {
@@ -277,9 +206,10 @@ void visualizarEstoque(Item tabela[])
   return;
 }
 
-void visualizarComanda(Item tabela[], int counter)
+void visualizarComanda(Item *tabela, int counter)
 {
   float venda_total;
+  sortQntVenda(tabela, contador);
   printf("Código\t| %-20s\t| Valor \t|   Quantidade\t| Sub-Total\n", "Nome");
   for (int i = 0; i < counter; i++)
   {
@@ -294,7 +224,7 @@ void visualizarComanda(Item tabela[], int counter)
   return;
 }
 
-void cadastroitem(Item tabela[])
+void cadastroitem(Item *tabela)
 {
   int quant_item = 0;
   int validar, quant, cod, new_items;
@@ -400,7 +330,7 @@ void cadastroitem(Item tabela[])
   } while (opcao != 3);
 }
 
-int validador(int cod, Item tabela[])
+int validador(int cod, Item *tabela)
 {
   for (int i = 0; i < contador; i++)
   {
@@ -417,7 +347,7 @@ int validador(int cod, Item tabela[])
   return 0;
 }
 
-void atualziarProd(Item tabela[])
+void atualziarProd(Item *tabela)
 {
   int codigo_editar;
   int verification;
@@ -511,7 +441,7 @@ void atualziarProd(Item tabela[])
   }
 }
 
-void excluirproduto(Item tabela[])
+void excluirproduto(Item *tabela)
 {
   int codigo_editar;
   int confirm;
@@ -575,7 +505,7 @@ void excluirproduto(Item tabela[])
   }
 }
 
-void salvarArquivoBN(Item tabela[])
+void salvarArquivoBN(Item *tabela)
 {
   FILE *file = fopen("produto.bin", "wb");
 
@@ -602,7 +532,7 @@ void salvarArquivoBN(Item tabela[])
   fclose(file);
 }
 
-void lerprodutos()
+void lerprodutos(Item *tabela)
 {
   FILE *file = fopen("produto.bin", "rb");
 
@@ -633,7 +563,7 @@ void lerprodutos()
   fclose(file);
 }
 
-void menuVendas(Item tabela[])
+void menuVendas(Item *tabela)
 {
   int opcao;
   printf("Menu\n");
@@ -661,7 +591,7 @@ void menuVendas(Item tabela[])
   }
 }
 
-void realizarVenda(Item tabela[])
+void realizarVenda(Item *tabela)
 {
   int has_estoque = 0, quant_upt, qnt_parcela, porcentagem_desc, porcent_juros, opc_pagamento, verification, i, actionCode = 0, estoque_verificacao = 0, venda_quantidade[5] = {0, 0, 0, 0, 0}, qnt_item;
   float venda_total, *vendas_totais, venda_total_juros, pagamento_recebido, valor_parcela, troco, max, subtotal, subtotal_item[5] = {0, 0, 0, 0, 0};
@@ -866,7 +796,7 @@ void realizarVenda(Item tabela[])
   return;
 }
 
-void salvarArquivoTXT(Item tabela[], int contador)
+void salvarArquivoTXT(Item *tabela, int contador)
 {
   time_t t = time(NULL);
   struct tm tm = *localtime(&t);
@@ -885,7 +815,7 @@ void salvarArquivoTXT(Item tabela[], int contador)
   }
   else
   {
-    printf("\nCriou arquivo\n");
+    // printf("\nCriou arquivo\n");
   }
   fprintf(file, "%d\n", contador);
 
@@ -901,11 +831,47 @@ void salvarArquivoTXT(Item tabela[], int contador)
   fclose(file);
 }
 
-void relatorioVendas(Item tabela[])
+void sortQntVenda(Item *tabela, int size_tabela)
+{
+  int i, j;
+  for (i = 0; i < size_tabela - 1; i++)
+  {
+    for (j = 0; j < size_tabela - i - 1; j++)
+    {
+      if (tabela[j].quant_vend < tabela[j + 1].quant_vend)
+      {
+        // Swap elements
+        Item temp = tabela[j];
+        tabela[j] = tabela[j + 1];
+        tabela[j + 1] = temp;
+      }
+    }
+  }
+}
+void sortCode(Item *tabela, int size_tabela)
+{
+  int i, j;
+  for (i = 0; i < size_tabela - 1; i++)
+  {
+    for (j = 0; j < size_tabela - i - 1; j++)
+    {
+      if (tabela[j].codigo > tabela[j + 1].codigo)
+      {
+        // Swap elements
+        Item temp = tabela[j];
+        tabela[j] = tabela[j + 1];
+        tabela[j + 1] = temp;
+      }
+    }
+  }
+}
+
+void relatorioVendas(Item *tabela)
 {
   system("cls");
   printf("Relatorio de Vendas: \n");
   printf("Código\t| %-20s\t| Qnt. Estoque\t| Qnt. Vendido\n", "Nome");
+  sortQntVenda(tabela, contador);
   for (int i = 0; i < contador; i++)
   {
     if (tabela[i].quant_vend > 0)
