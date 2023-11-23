@@ -271,8 +271,6 @@ void cadastroitem(Item *tabela)
           printf("\nCódigo do produto novo: ");
           inputNum(&tabela[contador].codigo);
 
-          printf("\nCod in table: %d\n", tabela[contador].codigo);
-
           if (validador(tabela[contador].codigo, tabela) == 1)
           {
             system("cls");
@@ -284,18 +282,13 @@ void cadastroitem(Item *tabela)
         printf("\nNome do produto: ");
         inputString(&tabela[contador].nome);
 
-        printf("\nName in table %s ", tabela[contador].nome);
-
         //  Preco unidade
         printf("\nPreço unitario: ");
         inputFloat(&tabela[contador].valor);
 
-        printf("\nPreço in table: %f\n", tabela[contador].valor);
-
         //  Quant item
         printf("\nQuantidade em estoque: ");
         inputNum(&tabela[contador].quantidade);
-        printf("\nQuantidade in table: %d\n", tabela[contador].quantidade);
         tabela[contador].quant_vend = 0;
         contador += i;
       }
