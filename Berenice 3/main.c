@@ -4,7 +4,17 @@
 #include <string.h>
 #include <time.h>
 #include <locale.h>
-#include "header.h"
+
+typedef struct
+{
+  int codigo;
+  char nome[25];
+  float valor;
+  int quantidade;
+  int quant_vend;
+} Item;
+
+int contador = 5;
 
 int main()
 {
@@ -51,10 +61,8 @@ int main()
   free(tabela);
   return 0;
 }
-<<<<<<< HEAD
-=======
 
-void initializeDefaultItems()
+void initializeDefaultItems(Item *tabela)
 {
   tabela[0].codigo = 1;
   strcpy(tabela[0].nome, "pao de forma");
@@ -226,7 +234,7 @@ void produtos(Item tabela[])
       break;
     case 6:
       system("cls");
-      lerprodutos();
+      lerprodutos(tabela);
       break;
     case 7:
       system("cls");
@@ -306,8 +314,6 @@ void cadastroitem(Item tabela[])
           printf("\nCódigo do produto novo: ");
           inputNum(&tabela[contador].codigo);
 
-          printf("\nCod in table: %d\n", tabela[contador].codigo);
-
           if (validador(tabela[contador].codigo, tabela) == 1)
           {
             system("cls");
@@ -319,18 +325,13 @@ void cadastroitem(Item tabela[])
         printf("\nNome do produto: ");
         inputString(&tabela[contador].nome);
 
-        printf("\nName in table %s ", tabela[contador].nome);
-
         //  Preco unidade
         printf("\nPreço unitario: ");
         inputFloat(&tabela[contador].valor);
 
-        printf("\nPreço in table: %f\n", tabela[contador].valor);
-
         //  Quant item
         printf("\nQuantidade em estoque: ");
         inputNum(&tabela[contador].quantidade);
-        printf("\nQuantidade in table: %d\n", tabela[contador].quantidade);
         tabela[contador].quant_vend = 0;
         contador += i;
       }
@@ -575,7 +576,7 @@ void salvarArquivoBN(Item tabela[])
   fclose(file);
 }
 
-void lerprodutos()
+void lerprodutos(Item *tabela)
 {
   FILE *file = fopen("produto.bin", "rb");
 
@@ -687,7 +688,6 @@ void realizarVenda(Item tabela[])
       inputNum(&carrinho[cart_size - 1].codigo);
       if (carrinho[cart_size - 1].codigo == 9999)
       {
-
         break;
       }
 
@@ -874,6 +874,100 @@ void salvarArquivoTXT(Item tabela[], int contador)
   fclose(file);
 }
 
+void salvarArquivoCSV(Item *tabela, int contador)
+{
+  time_t t = time(NULL);
+  struct tm tm = *localtime(&t);
+  char filename[22];
+
+  FILE *file = fopen("tabela.csv", "w");
+
+  if (file == NULL)
+  {
+    printf("Erro ao abrir o arquivo.\n");
+    return;
+  }
+
+  fprintf(file, "Código, Nome, Valor, Quantidade\n");
+
+  for (int i = 0; i < contador; i++)
+  {
+    fprintf(file, "%d, %s, %.2f, %d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade);
+  }
+
+  fclose(file);
+}
+void lerArquivoCSV(Item **tabela, int *contador)
+{
+  int counter = 0;
+  FILE *file = fopen("tabela.csv", "r");
+  if (file == NULL)
+  {
+    printf("\nArquivo de produto não encontrado.\n");
+    return;
+  }
+
+  char ch;
+  // feof = Find end of File
+  // Ele continua ate o final do arquivo
+  while (!feof(file))
+  {
+    ch = fgetc(file);
+    if (ch == '\n')
+    {
+      (counter)++;
+    }
+  }
+  rewind(file); // Retorna ao início do arquivo
+
+  *tabela = (Item *)malloc((counter) * sizeof(Item));
+
+  // Ignora a primeira linha, que contém os cabeçalhos
+  char buffer[1024];
+  fgets(buffer, 1024, file);
+
+  for (int i = 0; i < counter; i++)
+  {
+    fscanf(file, "%d, %25[^,], %f, %d\n", &(*tabela)[i].codigo, (*tabela)[i].nome, &(*tabela)[i].valor, &(*tabela)[i].quantidade);
+  }
+
+  fclose(file);
+}
+void sortQntVenda(Item *tabela, int size_tabela)
+{
+  int i, j;
+  for (i = 0; i < size_tabela - 1; i++)
+  {
+    for (j = 0; j < size_tabela - i - 1; j++)
+    {
+      if (tabela[j].quant_vend < tabela[j + 1].quant_vend)
+      {
+        // Swap elements
+        Item temp = tabela[j];
+        tabela[j] = tabela[j + 1];
+        tabela[j + 1] = temp;
+      }
+    }
+  }
+}
+void sortCode(Item *tabela, int size_tabela)
+{
+  int i, j;
+  for (i = 0; i < size_tabela - 1; i++)
+  {
+    for (j = 0; j < size_tabela - i - 1; j++)
+    {
+      if (tabela[j].codigo > tabela[j + 1].codigo)
+      {
+        // Swap elements
+        Item temp = tabela[j];
+        tabela[j] = tabela[j + 1];
+        tabela[j + 1] = temp;
+      }
+    }
+  }
+}
+
 void relatorioVendas(Item tabela[])
 {
   system("cls");
@@ -887,4 +981,3 @@ void relatorioVendas(Item tabela[])
     }
   }
 }
->>>>>>> parent of 90c489e (Update)

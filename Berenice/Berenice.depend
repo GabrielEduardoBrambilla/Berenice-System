@@ -25,5 +25,13 @@
 	<locale.h>
 	"header.h"
 
-1700780071 c:\wamp64\www\berenice-system\berenice\header.h
+1700841331 c:\wamp64\www\berenice-system\berenice\header.h
+
+1700842838 source:c:\wamp64\www\berenice-system\berenice\funcoes.c
+	"header.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<locale.h>
 
