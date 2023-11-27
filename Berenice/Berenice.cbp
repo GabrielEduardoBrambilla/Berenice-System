@@ -32,30 +32,14 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="Header.h" />
-		<Unit filename="attEexit.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="bubblesort.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="cadastro.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		
 		<Unit filename="funcoes.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="save.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="vendas.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="vizualizar.c">
-			<Option compilerVar="CC" />
-		</Unit>
+	
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
