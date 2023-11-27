@@ -4,13 +4,17 @@
 #include <string.h>
 #include <time.h>
 #include <locale.h>
+<<<<<<< HEAD
 #include "Funcoes.h"
+=======
+#include "header.h"
+>>>>>>> parent of 732f108 (Ultima berenice)
 
 int main()
 {
+
   Item *tabela;
   contador = 5;
-
   int opcao;
 
   tabela = (Item *)malloc(contador * sizeof(Item));
@@ -50,4 +54,8 @@ int main()
   } while (opcao != 3);
   free(tabela);
   return 0;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> parent of 732f108 (Ultima berenice)

@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-=======
 #include "header.h"
->>>>>>> parent of 732f108 (Ultima berenice)
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <locale.h>
-<<<<<<< HEAD
-#include "Funcoes.h"
-=======
->>>>>>> parent of 732f108 (Ultima berenice)
 
 void initializeDefaultItems(Item *tabela)
 {
@@ -24,41 +17,25 @@ void initializeDefaultItems(Item *tabela)
   strcpy(tabela[1].nome, "pao de centeio");
   tabela[1].valor = 8.69;
   tabela[1].quantidade = 10;
-<<<<<<< HEAD
-  tabela[1].quant_vend = 5;
-=======
   tabela[1].quant_vend = 8;
->>>>>>> parent of 732f108 (Ultima berenice)
 
   tabela[2].codigo = 3;
   strcpy(tabela[2].nome, "broa de milho");
   tabela[2].valor = 5.00;
   tabela[2].quantidade = 10;
-<<<<<<< HEAD
-  tabela[2].quant_vend = 3;
-=======
   tabela[2].quant_vend = 1;
->>>>>>> parent of 732f108 (Ultima berenice)
 
   tabela[3].codigo = 4;
   strcpy(tabela[3].nome, "Sonho");
   tabela[3].valor = 4.50;
   tabela[3].quantidade = 10;
-<<<<<<< HEAD
-  tabela[3].quant_vend = 9;
-=======
   tabela[3].quant_vend = 10;
->>>>>>> parent of 732f108 (Ultima berenice)
 
   tabela[4].codigo = 5;
   strcpy(tabela[4].nome, "Tubaina");
   tabela[4].valor = 3.25;
   tabela[4].quantidade = 10;
-<<<<<<< HEAD
-  tabela[4].quant_vend = 2;
-=======
   tabela[4].quant_vend = 12;
->>>>>>> parent of 732f108 (Ultima berenice)
 }
 
 // FUNÇÕES UTILITARIAS
@@ -70,13 +47,9 @@ void inputNum(int *var)
   {
     if (scanf("%d", var) != 1)
     {
-<<<<<<< HEAD
-      // Clear input buffer
-=======
 
       // Clear input buffer
       // EOF: End Of File
->>>>>>> parent of 732f108 (Ultima berenice)
       while ((c = getchar()) != '\n' && c != EOF)
         ;
       printf("\nNumero invalido. Tente novamente: ");
@@ -86,10 +59,7 @@ void inputNum(int *var)
       if (*var < 0)
       {
         // Clear input buffer
-<<<<<<< HEAD
-=======
         // EOF: End Of File
->>>>>>> parent of 732f108 (Ultima berenice)
         *var = NULL;
         while ((c = getchar()) != '\n' && c != EOF)
           ;
@@ -99,10 +69,7 @@ void inputNum(int *var)
       {
         validInput = 1;
         // Clear input buffer
-<<<<<<< HEAD
-=======
         // EOF: End Of File
->>>>>>> parent of 732f108 (Ultima berenice)
         while ((c = getchar()) != '\n' && c != EOF)
           ;
       }
@@ -122,10 +89,7 @@ void inputFloat(float *var)
     else
     {
       // Clear input buffer
-<<<<<<< HEAD
-=======
       // EOF: End Of File
->>>>>>> parent of 732f108 (Ultima berenice)
       int c;
       while ((c = getchar()) != '\n' && c != EOF)
         ;
@@ -181,11 +145,7 @@ void inputString(char *str)
 }
 
 // Lógica do programa
-<<<<<<< HEAD
-void produtos(Item tabela[])
-=======
 void produtos(Item *tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   int opcao;
   do
@@ -194,22 +154,10 @@ void produtos(Item *tabela)
     printf("2 - Cadastrar\n");
     printf("3 - Atualizar\n");
     printf("4 - Excluir\n");
-<<<<<<< HEAD
-    printf("5 - Salvar Binario\n");
-    printf("6 - Ler Binario\n");
-    printf("7 - Salvar CSV\n");
-    printf("8 - Ler CSV\n");
-    printf("9 - Salvar HTML\n");
-    printf("10 - Voltar\n");
-    inputNumRange(&opcao, 1, 10);
-=======
     printf("5 - Salvar\n");
     printf("6 - Ler\n");
-    printf("7 - Salvar CSV\n");
-    printf("8 - Ler CSV\n");
-    printf("9 - Voltar\n");
-    inputNumRange(&opcao, 1, 9);
->>>>>>> parent of 732f108 (Ultima berenice)
+    printf("7 - Voltar\n");
+    inputNumRange(&opcao, 1, 7);
 
     switch (opcao)
     {
@@ -230,53 +178,24 @@ void produtos(Item *tabela)
       excluirproduto(tabela);
       break;
     case 5:
-<<<<<<< HEAD
       salvarArquivoBN(tabela);
-=======
-      salvarArquivoHTML(tabela);
->>>>>>> parent of 732f108 (Ultima berenice)
       break;
     case 6:
       system("cls");
       lerprodutos(tabela);
       break;
     case 7:
-<<<<<<< HEAD
-=======
-      // salvar
->>>>>>> parent of 732f108 (Ultima berenice)
       system("cls");
-      salvarArquivoCSV(tabela, contador);
-      break;
-    case 8:
-      system("cls");
-      lerArquivoCSV(&tabela, contador);
-      break;
-    case 9:
-      system("cls");
-<<<<<<< HEAD
-      salvarArquivoHTML(tabela);
-      break;
-    case 10:
-      system("cls");
-=======
->>>>>>> parent of 732f108 (Ultima berenice)
       break;
     default:
       system("cls");
       printf("Opção inválida!!\n");
       break;
     }
-<<<<<<< HEAD
-  } while (opcao != 10);
+  } while (opcao != 7);
 }
 
-void visualizarEstoque(Item tabela[])
-=======
-  } while (opcao != 9);
-}
 void visualizarEstoque(Item *tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   sortCode(tabela, contador);
   printf("Código\t| %-20s\t| Valor\t\t| Quantidade\t\n", "Nome");
@@ -286,12 +205,8 @@ void visualizarEstoque(Item *tabela)
   }
   return;
 }
-<<<<<<< HEAD
 
-void visualizarComanda(Item tabela[], int counter)
-=======
 void visualizarComanda(Item *tabela, int counter)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   float venda_total;
   sortQntVenda(tabela, contador);
@@ -308,12 +223,8 @@ void visualizarComanda(Item *tabela, int counter)
 
   return;
 }
-<<<<<<< HEAD
 
-void cadastroitem(Item tabela[])
-=======
 void cadastroitem(Item *tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   int quant_item = 0;
   int validar, quant, cod, new_items;
@@ -352,6 +263,8 @@ void cadastroitem(Item *tabela)
           printf("\nCódigo do produto novo: ");
           inputNum(&tabela[contador].codigo);
 
+          printf("\nCod in table: %d\n", tabela[contador].codigo);
+
           if (validador(tabela[contador].codigo, tabela) == 1)
           {
             system("cls");
@@ -363,13 +276,18 @@ void cadastroitem(Item *tabela)
         printf("\nNome do produto: ");
         inputString(&tabela[contador].nome);
 
+        printf("\nName in table %s ", tabela[contador].nome);
+
         //  Preco unidade
         printf("\nPreço unitario: ");
         inputFloat(&tabela[contador].valor);
 
+        printf("\nPreço in table: %f\n", tabela[contador].valor);
+
         //  Quant item
         printf("\nQuantidade em estoque: ");
         inputNum(&tabela[contador].quantidade);
+        printf("\nQuantidade in table: %d\n", tabela[contador].quantidade);
         tabela[contador].quant_vend = 0;
         contador += i;
       }
@@ -411,12 +329,8 @@ void cadastroitem(Item *tabela)
     }
   } while (opcao != 3);
 }
-<<<<<<< HEAD
 
-int validador(int cod, Item tabela[])
-=======
 int validador(int cod, Item *tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   for (int i = 0; i < contador; i++)
   {
@@ -432,12 +346,8 @@ int validador(int cod, Item *tabela)
   // Novo código válido
   return 0;
 }
-<<<<<<< HEAD
 
-void atualziarProd(Item tabela[])
-=======
 void atualziarProd(Item *tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   int codigo_editar;
   int verification;
@@ -530,12 +440,8 @@ void atualziarProd(Item *tabela)
     }
   }
 }
-<<<<<<< HEAD
 
-void excluirproduto(Item tabela[])
-=======
 void excluirproduto(Item *tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   int codigo_editar;
   int confirm;
@@ -598,12 +504,8 @@ void excluirproduto(Item *tabela)
     }
   }
 }
-<<<<<<< HEAD
 
-void salvarArquivoBN(Item tabela[])
-=======
 void salvarArquivoBN(Item *tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   FILE *file = fopen("produto.bin", "wb");
 
@@ -629,84 +531,8 @@ void salvarArquivoBN(Item *tabela)
 
   fclose(file);
 }
-<<<<<<< HEAD
 
 void lerprodutos(Item *tabela)
-=======
-void salvarArquivoHTML(Item *tabela)
-{
-  FILE *file = fopen("estoque.html", "w");
-  sortQntVenda(tabela, contador);
-  if (file == NULL)
-  {
-    printf("Erro ao criar o arquivo.\n");
-    return;
-  }
-  else
-  {
-    fprintf(file, "<!DOCTYPE html>\n");
-    fprintf(file, "<html>\n");
-    fprintf(file, "<head>\n");
-    fprintf(file, "<title>Produto</title>\n");
-    fprintf(file, "<style>\n");
-    fprintf(file, "html, body {\n");
-    fprintf(file, "    height: 100vh;\n");
-    fprintf(file, "    margin: 0;\n");
-    fprintf(file, "    display: flex;\n");
-    fprintf(file, "    justify-content: center;\n");
-    fprintf(file, "    align-items: center;\n");
-    fprintf(file, "}\n");
-    fprintf(file, "table {\n");
-    fprintf(file, "    border-collapse: collapse;\n");
-    fprintf(file, "    border: 2px solid #ddd;\n");
-    fprintf(file, "}\n");
-    fprintf(file, "th, td {\n");
-    fprintf(file, "    padding: 8px;\n");
-    fprintf(file, "    border: 1px solid #ddd;\n");
-    fprintf(file, "    text-align: center;\n"); // Center align content
-    fprintf(file, "}\n");
-    fprintf(file, "thead tr {\n");
-    fprintf(file, "    background-color: #f2f2f2;\n");
-    fprintf(file, "}\n");
-    fprintf(file, "</style>\n");
-    fprintf(file, "</head>\n");
-    fprintf(file, "<body>\n");
-    fprintf(file, "<table>\n");
-    fprintf(file, "<thead>\n");
-    fprintf(file, "<tr>\n");
-    fprintf(file, "<th>Código</th>\n");
-    fprintf(file, "<th>Nome</th>\n");
-    fprintf(file, "<th>Valor</th>\n");
-    fprintf(file, "<th>Quantidade</th>\n");
-    fprintf(file, "<th>Quantidade Vendida</th>\n");
-    fprintf(file, "</tr>\n");
-    fprintf(file, "</thead>\n");
-    fprintf(file, "<tbody>\n");
-
-    for (int i = 0; i < contador; i++)
-    {
-      fprintf(file, "<tr>\n");
-      fprintf(file, "<td>%d</td>\n", tabela[i].codigo);
-      fprintf(file, "<td>%s</td>\n", tabela[i].nome);
-      fprintf(file, "<td>%.2f</td>\n", tabela[i].valor);
-      fprintf(file, "<td>%d</td>\n", tabela[i].quantidade);
-      fprintf(file, "<td>%d</td>\n", tabela[i].quant_vend);
-      fprintf(file, "</tr>\n");
-    }
-
-    fprintf(file, "</tbody>\n");
-    fprintf(file, "</table>\n");
-    fprintf(file, "</body>\n");
-    fprintf(file, "</html>\n");
-
-    sortCode(tabela, contador);
-
-    fclose(file);
-  }
-}
-
-void lerprodutos(Item **tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   FILE *file = fopen("produto.bin", "rb");
 
@@ -722,7 +548,6 @@ void lerprodutos(Item **tabela)
 
   fread(&contador, sizeof(int), 1, file);
 
-<<<<<<< HEAD
   tabela = (Item *)malloc(contador * sizeof(Item));
 
   for (int i = 0; i < contador; i++)
@@ -738,24 +563,7 @@ void lerprodutos(Item **tabela)
   fclose(file);
 }
 
-void menuVendas(Item tabela[])
-=======
-  *tabela = (Item *)malloc(contador * sizeof(Item));
-
-  for (int i = 0; i < contador; i++)
-  {
-    fread(&(*tabela[i]).codigo, sizeof(int), 1, file);
-    fread(&(*tabela[i]).nome, sizeof(char), 50, file);
-    fread(&(*tabela[i]).valor, sizeof(float), 1, file);
-    fread(&(*tabela[i]).quantidade, sizeof(int), 1, file);
-    fread(&(*tabela[i]).quant_vend, sizeof(int), 1, file);
-  }
-  visualizarEstoque(*tabela);
-
-  fclose(file);
-}
 void menuVendas(Item *tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   int opcao;
   printf("Menu\n");
@@ -782,12 +590,8 @@ void menuVendas(Item *tabela)
     break;
   }
 }
-<<<<<<< HEAD
 
-void realizarVenda(Item tabela[])
-=======
 void realizarVenda(Item *tabela)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   int has_estoque = 0, quant_upt, qnt_parcela, porcentagem_desc, porcent_juros, opc_pagamento, verification, i, actionCode = 0, estoque_verificacao = 0, venda_quantidade[5] = {0, 0, 0, 0, 0}, qnt_item;
   float venda_total, *vendas_totais, venda_total_juros, pagamento_recebido, valor_parcela, troco, max, subtotal, subtotal_item[5] = {0, 0, 0, 0, 0};
@@ -840,10 +644,7 @@ void realizarVenda(Item *tabela)
       inputNum(&carrinho[cart_size - 1].codigo);
       if (carrinho[cart_size - 1].codigo == 9999)
       {
-<<<<<<< HEAD
-=======
 
->>>>>>> parent of 732f108 (Ultima berenice)
         break;
       }
 
@@ -994,12 +795,8 @@ void realizarVenda(Item *tabela)
   free(carrinho);
   return;
 }
-<<<<<<< HEAD
 
-void salvarArquivoTXT(Item tabela[], int contador)
-=======
 void salvarArquivoTXT(Item *tabela, int contador)
->>>>>>> parent of 732f108 (Ultima berenice)
 {
   time_t t = time(NULL);
   struct tm tm = *localtime(&t);
@@ -1018,11 +815,7 @@ void salvarArquivoTXT(Item *tabela, int contador)
   }
   else
   {
-<<<<<<< HEAD
-    printf("\nCriou arquivo\n");
-=======
     // printf("\nCriou arquivo\n");
->>>>>>> parent of 732f108 (Ultima berenice)
   }
   fprintf(file, "%d\n", contador);
 
@@ -1037,69 +830,7 @@ void salvarArquivoTXT(Item *tabela, int contador)
 
   fclose(file);
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of 732f108 (Ultima berenice)
-void salvarArquivoCSV(Item *tabela, int contador)
-{
-  time_t t = time(NULL);
-  struct tm tm = *localtime(&t);
-  char filename[22];
-
-  FILE *file = fopen("tabela.csv", "w");
-
-  if (file == NULL)
-  {
-    printf("Erro ao abrir o arquivo.\n");
-    return;
-  }
-
-  fprintf(file, "Código, Nome, Valor, Quantidade\n");
-
-  for (int i = 0; i < contador; i++)
-  {
-    fprintf(file, "%d, %s, %.2f, %d\n", tabela[i].codigo, tabela[i].nome, tabela[i].valor, tabela[i].quantidade);
-  }
-
-  fclose(file);
-}
-void lerArquivoCSV(Item **tabela, int *contador)
-{
-  int counter = 0;
-  FILE *file = fopen("tabela.csv", "r");
-  if (file == NULL)
-  {
-    printf("\nArquivo de produto não encontrado.\n");
-    return;
-  }
-
-  char ch;
-  // feof = Find end of File
-  // Ele continua ate o final do arquivo
-  while (!feof(file))
-  {
-    ch = fgetc(file);
-    if (ch == '\n')
-    {
-      (counter)++;
-    }
-  }
-  rewind(file); // Retorna ao início do arquivo
-
-  *tabela = (Item *)malloc((counter) * sizeof(Item));
-
-  // Ignora a primeira linha, que contém os cabeçalhos
-  char buffer[1024];
-  fgets(buffer, 1024, file);
-
-  for (int i = 0; i < counter; i++)
-  {
-    fscanf(file, "%d, %25[^,], %f, %d\n", &(*tabela)[i].codigo, (*tabela)[i].nome, &(*tabela)[i].valor, &(*tabela)[i].quantidade);
-  }
-
-  fclose(file);
-}
 void sortQntVenda(Item *tabela, int size_tabela)
 {
   int i, j;
@@ -1134,89 +865,13 @@ void sortCode(Item *tabela, int size_tabela)
     }
   }
 }
-<<<<<<< HEAD
-void salvarArquivoHTML(Item *tabela)
-{
-  FILE *file = fopen("estoque.html", "w");
-  sortQntVenda(tabela, contador);
-  if (file == NULL)
-  {
-    printf("Erro ao criar o arquivo.\n");
-    return;
-  }
-  else
-  {
-    fprintf(file, "<!DOCTYPE html>\n");
-    fprintf(file, "<html>\n");
-    fprintf(file, "<head>\n");
-    fprintf(file, "<title>Produto</title>\n");
-    fprintf(file, "<style>\n");
-    fprintf(file, "html, body {\n");
-    fprintf(file, "    height: 100vh;\n");
-    fprintf(file, "    margin: 0;\n");
-    fprintf(file, "    display: flex;\n");
-    fprintf(file, "    justify-content: center;\n");
-    fprintf(file, "    align-items: center;\n");
-    fprintf(file, "}\n");
-    fprintf(file, "table {\n");
-    fprintf(file, "    border-collapse: collapse;\n");
-    fprintf(file, "    border: 2px solid #ddd;\n");
-    fprintf(file, "}\n");
-    fprintf(file, "th, td {\n");
-    fprintf(file, "    padding: 8px;\n");
-    fprintf(file, "    border: 1px solid #ddd;\n");
-    fprintf(file, "    text-align: center;\n"); // Center align content
-    fprintf(file, "}\n");
-    fprintf(file, "thead tr {\n");
-    fprintf(file, "    background-color: #f2f2f2;\n");
-    fprintf(file, "}\n");
-    fprintf(file, "</style>\n");
-    fprintf(file, "</head>\n");
-    fprintf(file, "<body>\n");
-    fprintf(file, "<table>\n");
-    fprintf(file, "<thead>\n");
-    fprintf(file, "<tr>\n");
-    fprintf(file, "<th>Código</th>\n");
-    fprintf(file, "<th>Nome</th>\n");
-    fprintf(file, "<th>Valor</th>\n");
-    fprintf(file, "<th>Quantidade</th>\n");
-    fprintf(file, "<th>Quantidade Vendida</th>\n");
-    fprintf(file, "</tr>\n");
-    fprintf(file, "</thead>\n");
-    fprintf(file, "<tbody>\n");
-    for (int i = 0; i < contador; i++)
-    {
-      fprintf(file, "<tr>\n");
-      fprintf(file, "<td>%d</td>\n", tabela[i].codigo);
-      fprintf(file, "<td>%s</td>\n", tabela[i].nome);
-      fprintf(file, "<td>%.2f</td>\n", tabela[i].valor);
-      fprintf(file, "<td>%d</td>\n", tabela[i].quantidade);
-      fprintf(file, "<td>%d</td>\n", tabela[i].quant_vend);
-      fprintf(file, "</tr>\n");
-    }
-    fprintf(file, "</tbody>\n");
-    fprintf(file, "</table>\n");
-    fprintf(file, "</body>\n");
-    fprintf(file, "</html>\n");
-    sortCode(tabela, contador);
-    fclose(file);
-  }
-}
 
-void relatorioVendas(Item tabela[])
-{
-  sortQntVenda(tabela, contador);
-  system("cls");
-  printf("Relatorio de Vendas: \n");
-  printf("Código\t| %-20s\t| Qnt. Estoque\t| Qnt. Vendido\n", "Nome");
-=======
 void relatorioVendas(Item *tabela)
 {
   system("cls");
   printf("Relatorio de Vendas: \n");
   printf("Código\t| %-20s\t| Qnt. Estoque\t| Qnt. Vendido\n", "Nome");
   sortQntVenda(tabela, contador);
->>>>>>> parent of 732f108 (Ultima berenice)
   for (int i = 0; i < contador; i++)
   {
     if (tabela[i].quant_vend > 0)
@@ -1224,8 +879,4 @@ void relatorioVendas(Item *tabela)
       printf("%d\t| %-20s\t| %d\t\t| \t%d\t\n", tabela[i].codigo, tabela[i].nome, tabela[i].quantidade, tabela[i].quant_vend);
     }
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> parent of 732f108 (Ultima berenice)

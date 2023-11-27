@@ -25,6 +25,7 @@
 	<locale.h>
 	"Funcoes.h"
 
+<<<<<<< HEAD
 1700841331 c:\wamp64\www\berenice-system\berenice\header.h
 
 1701102850 source:c:\wamp64\www\berenice-system\berenice\funcoes.c
@@ -41,4 +42,7 @@
 	<string.h>
 	<time.h>
 	<locale.h>
+=======
+1700780071 c:\wamp64\www\berenice-system\berenice\header.h
+>>>>>>> parent of 732f108 (Ultima berenice)
 
