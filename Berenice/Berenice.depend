@@ -17,7 +17,7 @@
 	<locale.h>
 	"header.h"
 
-1701102485 source:c:\wamp64\www\berenice-system\berenice\main.c
+1701102850 source:c:\wamp64\www\berenice-system\berenice\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -27,7 +27,7 @@
 
 1700841331 c:\wamp64\www\berenice-system\berenice\header.h
 
-1701102481 source:c:\wamp64\www\berenice-system\berenice\funcoes.c
+1701102850 source:c:\wamp64\www\berenice-system\berenice\funcoes.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -35,7 +35,7 @@
 	<locale.h>
 	"Funcoes.h"
 
-1701102483 c:\wamp64\www\berenice-system\berenice\funcoes.h
+1701102850 c:\wamp64\www\berenice-system\berenice\funcoes.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
