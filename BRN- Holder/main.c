@@ -34,7 +34,7 @@ void lerprodutos(Item *tabela);
 void menuVendas(Item tabela[]);
 void realizarVenda(Item tabela[]);
 void salvarArquivoTXT(Item tabela[], int contador);
-void relatorioVendas(Item tabela[]);
+void relatorioVendas(Item *tabela);
 
 void salvarArquivoCSV(Item *tabela, int contador);
 void lerArquivoCSV(Item **tabela, int *contador);
@@ -88,39 +88,37 @@ int main()
   return 0;
 }
 
-
-
 void initializeDefaultItems(Item *tabela)
 {
   tabela[0].codigo = 1;
   strcpy(tabela[0].nome, "pao de forma");
   tabela[0].valor = 7.50;
   tabela[0].quantidade = 10;
-  tabela[0].quant_vend = 2;
+  tabela[0].quant_vend = 50;
 
   tabela[1].codigo = 2;
   strcpy(tabela[1].nome, "pao de centeio");
   tabela[1].valor = 8.69;
   tabela[1].quantidade = 10;
-  tabela[1].quant_vend = 5;
+  tabela[1].quant_vend = 25;
 
   tabela[2].codigo = 3;
   strcpy(tabela[2].nome, "broa de milho");
   tabela[2].valor = 5.00;
   tabela[2].quantidade = 10;
-  tabela[2].quant_vend = 3;
+  tabela[2].quant_vend = 75;
 
   tabela[3].codigo = 4;
   strcpy(tabela[3].nome, "Sonho");
   tabela[3].valor = 4.50;
   tabela[3].quantidade = 10;
-  tabela[3].quant_vend = 9;
+  tabela[3].quant_vend = 150;
 
   tabela[4].codigo = 5;
   strcpy(tabela[4].nome, "Tubaina");
   tabela[4].valor = 3.25;
   tabela[4].quantidade = 10;
-  tabela[4].quant_vend = 2;
+  tabela[4].quant_vend = 300;
 }
 
 // FUNÇÕES UTILITARIAS
@@ -304,7 +302,9 @@ void visualizarEstoque(Item tabela[])
 void visualizarComanda(Item tabela[], int counter)
 {
   float venda_total;
-  sortQntVenda(tabela, contador);
+
+  sortQntVenda(tabela, counter);
+
   printf("Código\t| %-20s\t| Valor \t|   Quantidade\t| Sub-Total\n", "Nome");
   for (int i = 0; i < counter; i++)
   {
@@ -314,6 +314,7 @@ void visualizarComanda(Item tabela[], int counter)
       venda_total += tabela[i].valor * tabela[i].quantidade;
     }
   }
+
   printf("Total\tR$ %.2f\n", venda_total);
 
   return;
@@ -687,7 +688,6 @@ void realizarVenda(Item tabela[])
   Item *carrinho;
   int cart_size = 0;
   int item_index = cart_size;
-  printf("%d", cart_size);
 
   // Verificação se algum item tem estoque
   for (int i = 0; i < contador; i++)
@@ -725,15 +725,13 @@ void realizarVenda(Item tabela[])
     {
       system("cls");
       visualizarEstoque(tabela);
-      printf("\n%d\n", cart_size);
+      printf("\nTamnho do carrinho: %d\n", cart_size);
 
       printf("Para sair digite 9999 qual item deseja vender\n");
       printf("Digite qual item deseja vender\n");
       inputNum(&carrinho[cart_size - 1].codigo);
       if (carrinho[cart_size - 1].codigo == 9999)
-      {
         break;
-      }
 
       for (int i = 0; i < contador; i++)
       {
@@ -777,105 +775,105 @@ void realizarVenda(Item tabela[])
     strcpy(carrinho[cart_size - 1].nome, tabela[item_index].nome);
     carrinho[cart_size - 1].codigo = tabela[item_index].codigo;
     carrinho[cart_size - 1].valor = tabela[item_index].valor;
+    carrinho[cart_size - 1].quant_vend = carrinho[cart_size - 1].quantidade;
 
   } while (carrinho[cart_size].codigo != 9999);
 
   // // Parte de pagamento
   // // Parte de pagamento
   // // Parte de pagamento
+
+  system("cls");
+
+  // Visualiza os itens presente no carrinho
+  visualizarComanda(carrinho, cart_size);
+
+  printf("\nDeseja pagar a vista ou a prazo digite:\n");
+  printf("1 - para avista\n");
+  printf("2 - para a prazo\n");
+  inputNumRange(&opc_pagamento, 1, 2);
+  for (int i = 0; i < cart_size; i++)
   {
-    system("cls");
-
-    // Visualiza os itens presente no carrinho
-    visualizarComanda(carrinho, cart_size);
-
-    printf("\nDeseja pagar a vista ou a prazo digite:\n");
-    printf("1 - para avista\n");
-    printf("2 - para a prazo\n");
-    inputNumRange(&opc_pagamento, 1, 2);
-    for (int i = 0; i < cart_size; i++)
+    venda_total += carrinho[i].valor * carrinho[i].quantidade;
+  }
+  // Verifica se a opção de pagamento selecionada foi 1 ou seja avista
+  if (opc_pagamento == 1)
+  {
+    printf("\nPagamento avista selecionado\n");
+    // Verifica se o total da venda é menor ou igual a 50
+    if (venda_total <= 50)
     {
-      venda_total += carrinho[i].valor * carrinho[i].quantidade;
+      // Desconto de 5%
+      venda_total = venda_total - (venda_total * 0.05);
+      porcentagem_desc = 5;
     }
-    // Verifica se a opção de pagamento selecionada foi 1 ou seja avista
-    if (opc_pagamento == 1)
+    // Verifica se o total da venda é maior a 50 e ao mesmo tempo menor que 100
+    else if (venda_total > 50 && venda_total < 100)
     {
-      printf("\nPagamento avista selecionado\n");
-      // Verifica se o total da venda é menor ou igual a 50
-      if (venda_total <= 50)
-      {
-        // Desconto de 5%
-        venda_total = venda_total - (venda_total * 0.05);
-        porcentagem_desc = 5;
-      }
-      // Verifica se o total da venda é maior a 50 e ao mesmo tempo menor que 100
-      else if (venda_total > 50 && venda_total < 100)
-      {
-        // Desconto de 10%
-        venda_total = venda_total - (venda_total * 0.1);
-        porcentagem_desc = 10;
-      }
-      // Verifica se o total da venda é maior ou igual a 100
-      else if (venda_total >= 100)
-      {
-        // Desconto de 18%
-        venda_total = venda_total - (venda_total * 0.18);
-        porcentagem_desc = 18;
-      }
-      do
-      {
-        printf("Digite o valor recebido para calcular o troco\n");
-        printf("Desconto de %d%% aplicado a compra\n", porcentagem_desc);
-        printf("Total com desconto: RS %.2f\n", venda_total);
-        inputFloat(&pagamento_recebido);
-      } while (pagamento_recebido < venda_total);
+      // Desconto de 10%
+      venda_total = venda_total - (venda_total * 0.1);
+      porcentagem_desc = 10;
+    }
+    // Verifica se o total da venda é maior ou igual a 100
+    else if (venda_total >= 100)
+    {
+      // Desconto de 18%
+      venda_total = venda_total - (venda_total * 0.18);
+      porcentagem_desc = 18;
+    }
+    do
+    {
+      printf("Digite o valor recebido para calcular o troco\n");
+      printf("Desconto de %d%% aplicado a compra\n", porcentagem_desc);
+      printf("Total com desconto: RS %.2f\n", venda_total);
+      inputFloat(&pagamento_recebido);
+    } while (pagamento_recebido < venda_total);
 
-      // Verifica se o pagamento recebido é menor que o preco da venda a ser cobrada, e ao mesmo tempo se o pagamento é diferente de 0
-      // Se a verificação do if de cima for falso executa esse else
-      if (pagamento_recebido > venda_total)
-      {
-        troco = venda_total - pagamento_recebido;
-        troco = troco * -1;
-        printf("O troco e %.2f\n", troco);
-      }
-      if (pagamento_recebido == venda_total)
-      {
-        printf("Compra finalizada \n");
-      }
-    }
-    else
+    // Verifica se o pagamento recebido é menor que o preco da venda a ser cobrada, e ao mesmo tempo se o pagamento é diferente de 0
+    // Se a verificação do if de cima for falso executa esse else
+    if (pagamento_recebido > venda_total)
     {
-      do
-      {
-        printf("Digite a quantidade de vezes que deseja parcelar\n");
-        inputNum(&qnt_parcela);
-        if (qnt_parcela <= 0)
-        {
-          system("cls");
-          printf("Quantidade de parcelas invalida, digite novamente\n");
-        }
-      } while (qnt_parcela <= 0);
-      // Verifica se a quantidade de parcelas é valido sendo maior que 0
-      // Verifica se a quantidade de parcelas é está entre 3 e 1. E calcula os valores de acordo
-      if (qnt_parcela <= 3 && qnt_parcela >= 1)
-      {
-        venda_total_juros = venda_total + (venda_total * 0.05);
-        porcent_juros = 5;
-        valor_parcela = venda_total_juros / qnt_parcela;
-      }
-      // Verifica se a quantidade de parcelas é maior que 3 e calcula os valores de acordo
-      else if (qnt_parcela > 3)
-      {
-        venda_total_juros = venda_total + (venda_total * 0.08);
-        porcent_juros = 8;
-        valor_parcela = venda_total_juros / qnt_parcela;
-      }
-      printf("\nJuros Simples: %d%%\n", porcent_juros);
-      printf("Parcelado em: %dX\n", qnt_parcela);
-      printf("Total: RS%.2f\n", venda_total);
-      printf("Total com juros: RS%.2f\n", venda_total_juros);
-      printf("Valor da parcela: RS%.2f\n", valor_parcela);
+      troco = venda_total - pagamento_recebido;
+      troco = troco * -1;
+      printf("O troco e %.2f\n", troco);
     }
+    if (pagamento_recebido == venda_total)
+    {
+      printf("Compra finalizada \n");
+    }
+  }
+  else
+  {
+    do
+    {
+      printf("Digite a quantidade de vezes que deseja parcelar\n");
+      inputNum(&qnt_parcela);
+      if (qnt_parcela <= 0)
+      {
+        system("cls");
+        printf("Quantidade de parcelas invalida, digite novamente\n");
+      }
+    } while (qnt_parcela <= 0);
+    // Verifica se a quantidade de parcelas é valido sendo maior que 0
+    // Verifica se a quantidade de parcelas é está entre 3 e 1. E calcula os valores de acordo
+    if (qnt_parcela <= 3 && qnt_parcela >= 1)
+    {
+      venda_total_juros = venda_total + (venda_total * 0.05);
+      porcent_juros = 5;
+      valor_parcela = venda_total_juros / qnt_parcela;
+    }
+    // Verifica se a quantidade de parcelas é maior que 3 e calcula os valores de acordo
+    else if (qnt_parcela > 3)
+    {
+      venda_total_juros = venda_total + (venda_total * 0.08);
+      porcent_juros = 8;
+      valor_parcela = venda_total_juros / qnt_parcela;
+    }
+    printf("\nJuros Simples: %d%%\n", porcent_juros);
+    printf("Parcelado em: %dX\n", qnt_parcela);
+    printf("Total: RS%.2f\n", venda_total);
+    printf("Total com juros: RS%.2f\n", venda_total_juros);
+    printf("Valor da parcela: RS%.2f\n", valor_parcela);
   }
 
   salvarArquivoTXT(carrinho, cart_size);
@@ -978,15 +976,18 @@ void lerArquivoCSV(Item **tabela, int *contador)
 }
 void sortQntVenda(Item *tabela, int size_tabela)
 {
-  int i, j;
-  for (i = 0; i < size_tabela - 1; i++)
+  Item temp;
+
+  for (int i = 0; i < size_tabela - 1; i++)
   {
-    for (j = 0; j < size_tabela - i - 1; j++)
+
+    for (int j = 0; j < size_tabela - i - 1; j++)
     {
+
       if (tabela[j].quant_vend < tabela[j + 1].quant_vend)
       {
         // Swap elements
-        Item temp = tabela[j];
+        temp = tabela[j];
         tabela[j] = tabela[j + 1];
         tabela[j + 1] = temp;
       }
@@ -1078,10 +1079,11 @@ void salvarArquivoHTML(Item *tabela)
   }
 }
 
-void relatorioVendas(Item tabela[])
+void relatorioVendas(Item *tabela)
 {
+
   sortQntVenda(tabela, contador);
-  system("cls");
+
   printf("Relatorio de Vendas: \n");
   printf("Código\t| %-20s\t| Qnt. Estoque\t| Qnt. Vendido\n", "Nome");
   for (int i = 0; i < contador; i++)

@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1701119000 source:c:\wamp64\www\berenice-system\berenice 4\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<locale.h>
+	"Funcoes.h"
+
+1701119068 c:\wamp64\www\berenice-system\berenice 4\funcoes.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<locale.h>
+

@@ -37,12 +37,11 @@ void lerprodutos(Item *tabela);
 void menuVendas(Item tabela[]);
 void realizarVenda(Item tabela[]);
 void salvarArquivoTXT(Item tabela[], int contador);
-void relatorioVendas(Item tabela[]);
+void relatorioVendas(Item *tabela);
 
 void salvarArquivoCSV(Item *tabela, int contador);
 void lerArquivoCSV(Item **tabela, int *contador);
 void sortQntVenda(Item *tabela, int size_tabela);
 void sortCode(Item *tabela, int size_tabela);
 void salvarArquivoHTML(Item *tabela);
-
 #endif // FUNCOES_H_INCLUDED
