@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1701818534 source:c:\wamp64\www\berenice-system\prova\main.c
+	<stdio.h>
+	<stdlib.h>
+
